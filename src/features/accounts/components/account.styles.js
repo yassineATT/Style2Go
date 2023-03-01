@@ -97,3 +97,10 @@ export const SignUpCover = styled.View`
   margin-top: 15%;
   background-color: ${(props) => props.theme.colors.bg.primary}};
 `;
+
+export const SendCodeCard = styled.View`
+  background-color: ${(props) => props.theme.colors.bg.secondary};
+  width: 320px;
+  height: 260px;
+  border-radius: 40px;
+`;
