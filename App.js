@@ -1,10 +1,9 @@
+import * as React from "react";
 import { StatusBar as ExpoStatusBar } from "expo-status-bar";
 import { useFonts, Inter_500Medium } from "@expo-google-fonts/inter";
 import { ThemeProvider } from "styled-components";
-import { SignInScreen } from "./src/features/accounts/screens/signin.screen";
-import { SignUpScreen } from "./src/features/accounts/screens/signup.screen";
 import { theme } from "./src/infrastructure/theme";
-import * as React from "react";
+import { Navigation } from "./src/infrastructure/navigation/index";
 
 export default function App() {
   const [InterLoaded] = useFonts({
@@ -18,7 +17,7 @@ export default function App() {
   return (
     <>
       <ThemeProvider theme={theme}>
-        <SignUpScreen />
+        <Navigation />
         <ExpoStatusBar style="auto" />
       </ThemeProvider>
     </>
