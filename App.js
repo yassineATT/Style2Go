@@ -1,16 +1,20 @@
 import * as React from "react";
 import { StatusBar as ExpoStatusBar } from "expo-status-bar";
-import { useFonts, Inter_500Medium } from "@expo-google-fonts/inter";
+import { useFonts, Roboto_400Regular } from "@expo-google-fonts/roboto";
 import { ThemeProvider } from "styled-components";
 import { theme } from "./src/infrastructure/theme";
 import { Navigation } from "./src/infrastructure/navigation/index";
+import { Amplify } from "aws-amplify";
+import config from "./src/aws-exports";
+
+Amplify.configure(config);
 
 export default function App() {
-  const [InterLoaded] = useFonts({
-    Inter_500Medium,
+  const [Roboto] = useFonts({
+    Roboto_400Regular,
   });
 
-  if (!InterLoaded) {
+  if (!Roboto) {
     return null;
   }
 

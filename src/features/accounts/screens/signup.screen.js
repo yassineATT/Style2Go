@@ -1,5 +1,5 @@
 import React from "react";
-import { StatusBar } from "react-native";
+import { StatusBar, Alert } from "react-native";
 import {
   SignUpCard,
   AuthButton,
@@ -11,11 +11,14 @@ import {
 } from "./../components/account.styles";
 import AuthInput from "./../components/authinput";
 import { useForm } from "react-hook-form";
+import { Auth } from "aws-amplify";
+import { useNavigation } from "@react-navigation/native";
 
 const email_regex =
   /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
 
 export const SignUpScreen = () => {
+  const navigation = useNavigation();
   const {
     control,
     handleSubmit,
@@ -25,21 +28,36 @@ export const SignUpScreen = () => {
 
   const pwd = watch("password");
 
-  const handleSignUp = (data) => {
+  const signUpPress = async (data) => {
     console.log(data);
+    const { name, email, password } = data;
+    try {
+      const response = await Auth.signUp({
+        username: email,
+        password,
+        attributes: { name },
+      });
+      navigation.navigate("ConfirmEmail", { email });
+    } catch (error) {
+      if (error.code === "UsernameExistsException") {
+        Alert.alert("", "Email déjà utilisé");
+      } else {
+        Alert.alert(error.message);
+      }
+    }
   };
 
   return (
     <>
       <SignUpCover>
         <SignUpCard>
-          <AuthTitle>Create account</AuthTitle>
+          <AuthTitle>Crée un compte</AuthTitle>
           <AuthInput
-            name="username"
+            name="name"
             placeholder="Username"
             keyboardType="default"
             control={control}
-            rules={{ required: "Username is required" }}
+            rules={{ required: "Name is required" }}
           />
           <AuthInput
             name="email"
@@ -77,12 +95,12 @@ export const SignUpScreen = () => {
               validate: (value) => value === pwd || "Passwords do not match",
             }}
           />
-          <AuthButton mode="contained" onPress={handleSubmit(handleSignUp)}>
-            {/* handleSubmit vérifie d'abord les champs et les envoie à handleSignUp */}
+          <AuthButton mode="contained" onPress={handleSubmit(signUpPress)}>
+            {/* handleSubmit vérifie d'abord les champs et les envoie à signUpPress */}
             <AuthTextWhite>S'inscrire</AuthTextWhite>
           </AuthButton>
         </SignUpCard>
-        <SecondButton onPress={() => console.log("Compte Ok")}>
+        <SecondButton onPress={() => navigation.navigate("SignIn")}>
           <AuthTextBlack>J'ai déjà un compte</AuthTextBlack>
         </SecondButton>
         <StatusBar style="auto" />
