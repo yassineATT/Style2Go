@@ -69,7 +69,7 @@ export const ConfirmEmail = () => {
     <>
       <ConfirmEmailCover>
         <ConfirmEmailCard>
-          <AuthTitle>Entrer le code</AuthTitle>
+          <AuthTitle>Confirmer votre mail</AuthTitle>
           <AuthInput
             name="email"
             placeholder="Email"
@@ -98,7 +98,7 @@ export const ConfirmEmail = () => {
           </SecondButton>
         </ConfirmEmailCard>
         <SecondButton onPress={() => navigation.navigate("SignIn")}>
-          <AuthTextBlack>Annuler</AuthTextBlack>
+          <AuthTextBlack>Confirmer plus tard</AuthTextBlack>
         </SecondButton>
         <StatusBar style="auto" />
       </ConfirmEmailCover>

@@ -25,6 +25,7 @@ export const ResetPwdScreen = () => {
   const newPasswordPress = async (data) => {
     try {
       await Auth.forgotPasswordSubmit(data.email, data.code, data.password);
+      navigation.navigate("SignIn");
     } catch (error) {
       switch (error.code) {
         case "CodeMismatchException":

@@ -105,13 +105,13 @@ export const SendCodeCard = styled.View`
 
 export const ConfirmEmailCard = styled(Card)`
   background-color: ${(props) => props.theme.colors.bg.secondary};
-  width: 320px;
+  width: 330px;
   margin-top: 30%;
-  height: 380px;
+  height: 390px;
   border-radius: 40px;
 `;
 
-export const ConfirmEmailCover = styled(Card)`
+export const ConfirmEmailCover = styled.View`
   flex: 1;
   align-items: center;
   background-color: ${(props) => props.theme.colors.bg.primary}};
@@ -120,12 +120,12 @@ export const ConfirmEmailCover = styled(Card)`
 export const ResetPwdCard = styled(Card)`
   background-color: ${(props) => props.theme.colors.bg.secondary};
   width: 320px;
-  margin-top: 25%;
+  margin-top: 40%;
   height: 400px;
   border-radius: 40px;
 `;
 
-export const ResetPwdCover = styled(Card)`
+export const ResetPwdCover = styled.View`
   flex: 1;
   align-items: center;
   background-color: ${(props) => props.theme.colors.bg.primary}};
