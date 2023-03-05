@@ -1,5 +1,5 @@
 import styled from "styled-components/native";
-import { Button, Card, TextInput, Text } from "react-native-paper";
+import { Button, Card, Text } from "react-native-paper";
 
 //Déclaration des styles pour les composants de la page de connexion
 
@@ -28,7 +28,6 @@ export const AuthButton = styled(Button)`
 
 export const AuthTitle = styled(Text)`
   font-family: ${(props) => props.theme.fonts.body};
-  font-style: italic;
   font-weight: 800;
   color: white;
   font-size: 30px;
@@ -38,7 +37,6 @@ export const AuthTitle = styled(Text)`
 
 const textStyles = {
   fontFamily: (props) => props.theme.fonts.body,
-  fontStyle: "italic",
   fontWeight: "800",
   fontSize: "16px",
   textAlign: "center",
@@ -57,7 +55,7 @@ export const AuthTextBlack = styled(Text)`
 export const SecondButton = styled(Button)`
   background-color: ${(props) => props.theme.colors.bg.none};
   width: 300px;
-  margin-top: 36px;
+  margin-top: 34px;
   margin-bottom: 24px;
   align-self: center;
   width: 250px;
@@ -88,13 +86,13 @@ export const SignUpCard = styled(Card)`
   background-color: ${(props) => props.theme.colors.bg.secondary};
   width: 320px;
   height: 490px;
+  margin-top: 15%;
   border-radius: 40px;
 `;
 
 export const SignUpCover = styled.View`
   flex: 1;
   align-items: center;
-  margin-top: 15%;
   background-color: ${(props) => props.theme.colors.bg.primary}};
 `;
 
@@ -103,4 +101,32 @@ export const SendCodeCard = styled.View`
   width: 320px;
   height: 260px;
   border-radius: 40px;
+`;
+
+export const ConfirmEmailCard = styled(Card)`
+  background-color: ${(props) => props.theme.colors.bg.secondary};
+  width: 320px;
+  margin-top: 30%;
+  height: 380px;
+  border-radius: 40px;
+`;
+
+export const ConfirmEmailCover = styled(Card)`
+  flex: 1;
+  align-items: center;
+  background-color: ${(props) => props.theme.colors.bg.primary}};
+`;
+
+export const ResetPwdCard = styled(Card)`
+  background-color: ${(props) => props.theme.colors.bg.secondary};
+  width: 320px;
+  margin-top: 25%;
+  height: 400px;
+  border-radius: 40px;
+`;
+
+export const ResetPwdCover = styled(Card)`
+  flex: 1;
+  align-items: center;
+  background-color: ${(props) => props.theme.colors.bg.primary}};
 `;
