@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { StatusBar, Alert } from "react-native";
 import {
   AccountCover,
@@ -13,43 +13,16 @@ import {
 } from "../components/account.styles";
 import AuthInput from "../components/authinput";
 import { useForm } from "react-hook-form";
-import { Auth } from "aws-amplify";
 import { useNavigation } from "@react-navigation/native";
+import { AuthenticationContext } from "./../../../services/authentification/auth.context";
 
 export const SignInScreen = () => {
-  const {
-    control,
-    handleSubmit,
-    formState: { errors },
-  } = useForm();
+  const { control, handleSubmit } = useForm();
+  const { onLogin, isLoading } = useContext(AuthenticationContext);
 
   const navigation = useNavigation();
   const email_regex =
     /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
-
-  const [loading, setLoading] = useState(false);
-
-  const signInPress = async (data) => {
-    if (loading) {
-      return;
-    }
-
-    setLoading(true);
-    try {
-      const response = await Auth.signIn(data.email, data.password);
-      console.log(response);
-      navigation.navigate("Home");
-    } catch (error) {
-      if (error.code === "UserNotFoundException") {
-        Alert.alert("", "Utilisateur inconnu");
-      } else if (error.code === "NotAuthorizedException") {
-        Alert.alert("", "Mot de passe incorrect");
-      } else {
-        Alert.alert(error.message);
-      }
-    }
-    setLoading(false);
-  };
 
   return (
     <>
@@ -80,9 +53,12 @@ export const SignInScreen = () => {
               required: "Password is required",
             }}
           />
-          <AuthButton mode="contained" onPress={handleSubmit(signInPress)}>
+          <AuthButton
+            mode="contained"
+            onPress={handleSubmit((data) => onLogin(data.email, data.password))}
+          >
             <AuthTextWhite>
-              {loading ? "Connexion en cours..." : "Se connecter"}
+              {isLoading ? "Connexion en cours..." : "Se connecter"}
             </AuthTextWhite>
           </AuthButton>
         </SignInCard>

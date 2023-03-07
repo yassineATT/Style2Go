@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import { StatusBar, Alert } from "react-native";
 import {
   SignUpCard,
@@ -11,39 +11,31 @@ import {
 } from "./../components/account.styles";
 import AuthInput from "./../components/authinput";
 import { useForm } from "react-hook-form";
-import { Auth } from "aws-amplify";
 import { useNavigation } from "@react-navigation/native";
+import { AuthenticationContext } from "./../../../services/authentification/auth.context";
 
 const email_regex =
   /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
 
 export const SignUpScreen = () => {
+  const { onSignUp } = useContext(AuthenticationContext);
   const navigation = useNavigation();
-  const {
-    control,
-    handleSubmit,
-    watch,
-    formState: { errors },
-  } = useForm();
-
+  const { control, handleSubmit, watch } = useForm();
   const pwd = watch("password");
 
-  const signUpPress = async (data) => {
-    console.log(data);
-    const { name, email, password } = data;
-    try {
-      const response = await Auth.signUp({
-        username: email,
-        password,
-        attributes: { name },
-      });
-      navigation.navigate("ConfirmEmail", { email });
-    } catch (error) {
-      if (error.code === "UsernameExistsException") {
-        Alert.alert("", "Email déjà utilisé");
-      } else {
-        Alert.alert(error.message);
-      }
+  const signUpPress = async (name, email, password) => {
+    const response = await onSignUp(name, email, password);
+    if (response) {
+      Alert.alert(
+        "Inscription réussie",
+        "Continuer pour confirmer votre email",
+        [
+          {
+            text: "Continuer",
+            onPress: () => navigation.navigate("ConfirmEmail"),
+          },
+        ]
+      );
     }
   };
 
@@ -72,30 +64,36 @@ export const SignUpScreen = () => {
           <AuthInput
             name="password"
             keyboardType="password"
-            placeholder="Password"
+            placeholder="Mot de passe"
             secureTextEntry
             control={control}
             isPassword={true}
             rules={{
               minLength: {
                 value: 6,
-                message: "Password must be at least 6 characters",
+                message: "Le mot de passe doit contenir au moins 6 caractères",
               },
-              required: "Password is required",
+              required: "Mot de passe requis",
             }}
           />
           <AuthInput
             name="password-repeat"
-            placeholder="Repeat Password"
+            placeholder="Répétez le mot de passe"
             keyboardType="password"
             secureTextEntry
             control={control}
             isPassword={true}
             rules={{
-              validate: (value) => value === pwd || "Passwords do not match",
+              validate: (value) =>
+                value === pwd || "Les mots de passe ne correspondent pas",
             }}
           />
-          <AuthButton mode="contained" onPress={handleSubmit(signUpPress)}>
+          <AuthButton
+            mode="contained"
+            onPress={handleSubmit(async (data) =>
+              signUpPress(data.name, data.email, data.password)
+            )}
+          >
             {/* handleSubmit vérifie d'abord les champs et les envoie à signUpPress */}
             <AuthTextWhite>S'inscrire</AuthTextWhite>
           </AuthButton>
