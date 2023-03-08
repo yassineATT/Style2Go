@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext } from "react";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { SignInScreen } from "../../features/accounts/screens/signin.screen";
 import { SignUpScreen } from "../../features/accounts/screens/signup.screen";
@@ -6,35 +6,12 @@ import { ResetPwdScreen } from "../../features/accounts/screens/reset-pwd.screen
 import { SendCodeScreen } from "../../features/accounts/screens/send-code.screens";
 import { Home } from "../../features/shops/screens/index";
 import { ConfirmEmail } from "../../features/accounts/screens/confirm-email.screen";
-import { Auth, Hub } from "aws-amplify";
+import { AuthenticationContext } from "../../services/authentification/auth.context";
 
 const Stack = createNativeStackNavigator();
 
 export const AuthNavigator = () => {
-  const [user, setUser] = useState(undefined);
-
-  const checkAuth = async () => {
-    try {
-      const authUser = await Auth.currentAuthenticatedUser({
-        bypassCache: true,
-      });
-      setUser(authUser);
-    } catch (error) {
-      setUser(null);
-    }
-  };
-
-  useEffect(() => {
-    checkAuth();
-  }, []);
-
-  useEffect(() => {
-    Hub.listen("auth", (data) => {
-      if (data.payload.event === "signIn" || data.payload.event === "signOut") {
-        checkAuth();
-      }
-    });
-  }, []);
+  const { user } = useContext(AuthenticationContext);
 
   return (
     <Stack.Navigator screenOptions={{ headerShown: false }}>

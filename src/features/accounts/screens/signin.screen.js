@@ -1,5 +1,5 @@
 import React, { useContext, useState } from "react";
-import { StatusBar, Alert } from "react-native";
+import { StatusBar } from "react-native";
 import {
   AccountCover,
   SignInCard,
@@ -19,7 +19,6 @@ import { AuthenticationContext } from "./../../../services/authentification/auth
 export const SignInScreen = () => {
   const { control, handleSubmit } = useForm();
   const { onLogin, isLoading } = useContext(AuthenticationContext);
-
   const navigation = useNavigation();
   const email_regex =
     /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;

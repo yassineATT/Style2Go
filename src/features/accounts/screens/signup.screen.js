@@ -32,7 +32,8 @@ export const SignUpScreen = () => {
         [
           {
             text: "Continuer",
-            onPress: () => navigation.navigate("ConfirmEmail"),
+            onPress: () =>
+              navigation.navigate("ConfirmEmail", { email: email }),
           },
         ]
       );

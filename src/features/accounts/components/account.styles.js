@@ -107,7 +107,7 @@ export const ConfirmEmailCard = styled(Card)`
   background-color: ${(props) => props.theme.colors.bg.secondary};
   width: 330px;
   margin-top: 30%;
-  height: 390px;
+  height: 320px;
   border-radius: 40px;
 `;
 
