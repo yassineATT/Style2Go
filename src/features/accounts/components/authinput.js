@@ -8,9 +8,9 @@ const StyledTextInput = styled(TextInput).attrs((props) => ({
   theme: {
     colors: {
       primary: props.error ? "red" : "black",
-      background: "white",
-      text: "white",
-      underlineColor: "transparent",
+      background: props.theme.colors.bg.primary,
+      text: props.theme.colors.text.primary,
+      underlineColor: props.theme.colors.ui.none,
       disabled: "none",
     },
   },
@@ -22,6 +22,7 @@ const StyledTextInput = styled(TextInput).attrs((props) => ({
 `;
 
 const AuthInput = ({
+  // Récupération des props
   control,
   name,
   rules = {},
@@ -30,9 +31,9 @@ const AuthInput = ({
   keyboardType,
   isPassword = false,
 }) => {
-  // Envoi des props au composant AuthInput pour les utiliser dans le composant StyledTextInput
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
   return (
+    // Controller permet de gérer les erreurs et de récupérer les valeurs des inputs dans le formulaire
     <Controller
       control={control}
       name={name}

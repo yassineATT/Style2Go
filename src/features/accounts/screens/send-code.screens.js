@@ -17,7 +17,6 @@ import { AuthenticationContext } from "./../../../services/authentification/auth
 export const SendCodeScreen = () => {
   const { control, handleSubmit } = useForm();
   const { onSendCode } = useContext(AuthenticationContext);
-
   const navigation = useNavigation();
 
   const sendCodePress = async (email) => {

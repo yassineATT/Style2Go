@@ -2,7 +2,6 @@ import React, { createContext } from "react";
 import { Auth, Hub } from "aws-amplify";
 import { useState, useEffect } from "react";
 import { Alert } from "react-native";
-import { useNavigation } from "@react-navigation/native";
 
 export const AuthenticationContext = createContext();
 

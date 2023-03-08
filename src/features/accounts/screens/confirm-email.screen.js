@@ -12,7 +12,6 @@ import {
 import AuthInput from "../components/authinput";
 import { useForm } from "react-hook-form";
 import { useNavigation, useRoute } from "@react-navigation/native";
-import { Auth } from "aws-amplify";
 import { AuthenticationContext } from "./../../../services/authentification/auth.context";
 
 export const ConfirmEmail = () => {
@@ -20,7 +19,7 @@ export const ConfirmEmail = () => {
   const { onConfirmEmail, onResendEmail } = useContext(AuthenticationContext);
   const { control, handleSubmit, watch } = useForm({
     defaultValues: { email: route?.params?.email },
-  });
+  }); // entrer le mail dans le champ email
   const email = watch("email");
   const navigation = useNavigation();
 
