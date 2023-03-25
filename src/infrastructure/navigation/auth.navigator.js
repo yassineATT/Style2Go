@@ -4,7 +4,7 @@ import { SignInScreen } from "../../features/accounts/screens/signin.screen";
 import { SignUpScreen } from "../../features/accounts/screens/signup.screen";
 import { ResetPwdScreen } from "../../features/accounts/screens/reset-pwd.screens";
 import { SendCodeScreen } from "../../features/accounts/screens/send-code.screens";
-import { Home } from "../../features/shops/screens/index";
+import { HomeNavigator } from "./home.navigator";
 import { ConfirmEmail } from "../../features/accounts/screens/confirm-email.screen";
 import { AuthenticationContext } from "../../services/authentification/auth.context";
 
@@ -16,7 +16,7 @@ export const AuthNavigator = () => {
   return (
     <Stack.Navigator screenOptions={{ headerShown: false }}>
       {user ? (
-        <Stack.Screen name="Home" component={Home} />
+        <Stack.Screen name="Home" component={HomeNavigator} />
       ) : (
         <>
           <Stack.Screen name="SignIn" component={SignInScreen} />
