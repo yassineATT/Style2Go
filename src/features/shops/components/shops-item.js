@@ -1,6 +1,7 @@
 import React from "react";
 import { Pressable } from "react-native";
 import { BoutiqueCard, BoutiqueCover, BoutiqueTitle } from "./shop.styles";
+import { useNavigation } from "@react-navigation/native";
 
 export const ShopItem = ({ boutique = {} }) => {
   const {
@@ -10,7 +11,11 @@ export const ShopItem = ({ boutique = {} }) => {
     ],
   } = boutique;
 
-  const onPress = () => {};
+  const navigation = useNavigation();
+
+  const onPress = () => {
+    navigation.navigate("ShopScreen", { id: boutique.id, name: boutique.name });
+  };
 
   return (
     <Pressable onPress={onPress}>

@@ -34,3 +34,37 @@ export const SafeArea = styled(SafeAreaView)`
   flex: 1;
   background-color: ${(props) => props.theme.colors.bg.primary};
 `;
+
+export const BackContainer = styled.View`
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  z-index: 9;
+`;
+
+export const ShopName = styled.Text`
+  font-family: ${(props) => props.theme.fonts.body};
+  font-size: 24px;
+  font-weight: bold;
+  text-align: center;
+  margin-top: 16px;
+`;
+
+export const NewCollectionButton = styled.TouchableOpacity`
+  background-color: ${(props) => props.theme.colors.brand.primary};
+  padding: 16px;
+  border-radius: 5px;
+  margin: 10px;
+  margin-top: 60px;
+`;
+
+export const CarouselContainer = styled.View`
+  padding: 10px;
+`;
+
+export const CarouselText = styled.Text`
+  font-family: ${(props) => props.theme.fonts.body};
+  font-size: 18px;
+  text-align: center;
+  margin-top: 16px;
+`;
