@@ -1,76 +1,20 @@
 import React from "react";
-import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import { TabNavigator } from "./tab.navigator";
+import { ShopScreen } from "../../features/shops/screens/shop-screen";
 import { HomeScreen } from "../../features/shops/screens/home-screen";
-import { MaterialCommunityIcons } from "@expo/vector-icons";
 
-const Tab = createBottomTabNavigator();
+const Stack = createNativeStackNavigator();
 
-const tabBarIcon =
-  (name) =>
-  ({ color, size }) =>
-    <MaterialCommunityIcons name={name} size={size} color={color} />;
-
-export const HomeNavigator = () => {
+export default function HomeNavigator() {
   return (
-    <Tab.Navigator
-      initialRouteName="Home"
+    <Stack.Navigator
       screenOptions={{
-        tabBarActiveTintColor: "#FFBF69",
-        tabBarInactiveTintColor: "grey",
         headerShown: false,
-        shifting: false,
-        tabBarLabelStyle: {
-          fontSize: 13,
-          fontFamily: "Roboto",
-        },
-        tabBarStyle: {
-          backgroundColor: "white",
-          paddingTop: 1,
-          border: 0,
-          elevation: 0,
-        },
       }}
     >
-      <Tab.Screen
-        name="Home"
-        component={HomeScreen}
-        options={{
-          tabBarLabel: "Accueil",
-          tabBarIcon: ({ color, size }) => (
-            <MaterialCommunityIcons name="home" size={size} color={color} />
-          ),
-        }}
-      />
-      <Tab.Screen
-        name="Map"
-        component={HomeScreen}
-        options={{
-          tabBarLabel: "Map",
-          tabBarIcon: ({ color, size }) => (
-            <MaterialCommunityIcons name="map" size={size} color={color} />
-          ),
-        }}
-      />
-      <Tab.Screen
-        name="Cart"
-        component={HomeScreen}
-        options={{
-          tabBarLabel: "Panier",
-          tabBarIcon: ({ color, size }) => (
-            <MaterialCommunityIcons name="cart" size={size} color={color} />
-          ),
-        }}
-      />
-      <Tab.Screen
-        name="Settings"
-        component={HomeScreen}
-        options={{
-          tabBarLabel: "Paramètres",
-          tabBarIcon: ({ color, size }) => (
-            <MaterialCommunityIcons name="cog" size={size} color={color} />
-          ),
-        }}
-      />
-    </Tab.Navigator>
+      <Stack.Screen name="HomeScreen" component={TabNavigator} />
+      <Stack.Screen name="ShopScreen" component={ShopScreen} />
+    </Stack.Navigator>
   );
-};
+}
