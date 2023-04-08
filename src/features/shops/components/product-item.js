@@ -21,7 +21,7 @@ export const ProductItem = memo(({ item }) => {
       <View>
         <Image
           source={{ uri: item.image }}
-          style={{ width: 250, height: 400, borderRadius: 5 }}
+          style={{ width: 300, height: 500, borderRadius: 5 }}
           resizeMode="cover"
         ></Image>
         <CarouselText>{item.name}</CarouselText>

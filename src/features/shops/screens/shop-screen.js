@@ -1,45 +1,37 @@
-import React, { useState, useEffect } from "react";
-import { Text, View, ActivityIndicator } from "react-native";
+import React, { useEffect, useContext } from "react";
+import { Text, View, ActivityIndicator, Dimensions } from "react-native";
 import {
   SafeArea,
   BackContainer,
   ShopName,
   NewCollectionButton,
   CarouselContainer,
-  CarouselText,
 } from "../components/shop.styles";
 import { colors } from "../../../infrastructure/theme/colors";
 import { useNavigation } from "@react-navigation/native";
 import { Ionicons } from "@expo/vector-icons";
 import Carousel from "react-native-snap-carousel";
-import { Dimensions } from "react-native";
-import { Image } from "react-native";
-import { DataStore } from "aws-amplify";
-import { Shop, Product } from "../../../models";
 import { ProductItem } from "../components/product-item";
+import { ShopContext } from "../../../services/shop/shop.context";
 
 export const ShopScreen = ({ route }) => {
-  const { id } = route.params;
-
-  const [shop, setShop] = useState(null);
-  const [product, setProduct] = useState([]);
-
-  useEffect(() => {
-    DataStore.query(Shop, id).then(setShop);
-
-    DataStore.query(Product).then((products) => {
-      const filteredProducts = products.filter((p) => p.shopID === id);
-      setProduct(filteredProducts);
-    });
-  }, []);
-
-  if (!shop) {
-    return <ActivityIndicator size="large" />;
-  }
-
+  const { id, name } = route.params;
+  const navigation = useNavigation();
+  const { products, loading, getProducts } = useContext(ShopContext);
   const renderItem = ({ item }) => <ProductItem item={item} />;
 
-  const navigation = useNavigation();
+  useEffect(() => {
+    getProducts(id);
+  }, []);
+
+  if (loading) {
+    return (
+      <SafeArea>
+        <ActivityIndicator size="large" />
+      </SafeArea>
+    );
+  }
+
   return (
     <SafeArea>
       <View>
@@ -50,7 +42,7 @@ export const ShopScreen = ({ route }) => {
             size={30}
           />
         </BackContainer>
-        <ShopName>{shop.name}</ShopName>
+        <ShopName>{name}</ShopName>
 
         <NewCollectionButton
           style={{
@@ -65,7 +57,7 @@ export const ShopScreen = ({ route }) => {
       </View>
       <CarouselContainer>
         <Carousel
-          data={product}
+          data={products}
           renderItem={renderItem}
           sliderWidth={Dimensions.get("window").width}
           itemWidth={250}

@@ -8,6 +8,7 @@ import { Amplify } from "aws-amplify";
 import config from "./src/aws-exports";
 import { AuthenticationContextProvider } from "./src/services/authentification/auth.context";
 import { NavigationContainer } from "@react-navigation/native";
+import { ShopProvider } from "./src/services/shop/shop.context";
 
 Amplify.configure(config);
 
@@ -24,7 +25,9 @@ export default function App() {
     <>
       <ThemeProvider theme={theme}>
         <AuthenticationContextProvider>
-          <Navigation />
+          <ShopProvider>
+            <Navigation />
+          </ShopProvider>
         </AuthenticationContextProvider>
         <ExpoStatusBar style="auto" />
       </ThemeProvider>

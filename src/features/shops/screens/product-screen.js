@@ -1,20 +1,15 @@
-import React, { useState, useEffect } from "react";
-import { Text, View, ActivityIndicator } from "react-native";
+import React from "react";
+import { View } from "react-native";
 import {
   SafeArea,
   BackContainer,
   ShopName,
-  NewCollectionButton,
   CarouselContainer,
-  CarouselText,
 } from "../components/shop.styles";
-import { colors } from "../../../infrastructure/theme/colors";
 import { useNavigation } from "@react-navigation/native";
 import { Ionicons } from "@expo/vector-icons";
 import Carousel from "react-native-snap-carousel";
 import { Dimensions } from "react-native";
-import { DataStore } from "aws-amplify";
-import { Product } from "../../../models";
 import { ProductItem } from "../components/product-item";
 
 export const ProductScreen = ({ route }) => {
@@ -39,8 +34,8 @@ export const ProductScreen = ({ route }) => {
             data={[{ name, price, image, description }]}
             renderItem={renderItem}
             sliderWidth={Dimensions.get("window").width}
-            itemWidth={250}
-            itemHeight={400}
+            itemWidth={300}
+            itemHeight={500}
           />
         </CarouselContainer>
       </View>
