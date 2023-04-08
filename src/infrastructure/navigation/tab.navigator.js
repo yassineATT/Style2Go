@@ -2,6 +2,7 @@ import React from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { HomeScreen } from "../../features/shops/screens/home-screen";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
+import { SettingScreen } from "../../features/settings/screens/settings-screen";
 
 const Tab = createBottomTabNavigator();
 
@@ -37,12 +38,12 @@ export const TabNavigator = () => {
         }}
       />
       <Tab.Screen
-        name="Map"
+        name="Favoris"
         component={HomeScreen}
         options={{
-          tabBarLabel: "Map",
+          tabBarLabel: "Favoris",
           tabBarIcon: ({ color, size }) => (
-            <MaterialCommunityIcons name="map" size={size} color={color} />
+            <MaterialCommunityIcons name="heart" size={size} color={color} />
           ),
         }}
       />
@@ -58,7 +59,7 @@ export const TabNavigator = () => {
       />
       <Tab.Screen
         name="Settings"
-        component={HomeScreen}
+        component={SettingScreen}
         options={{
           tabBarLabel: "Paramètres",
           tabBarIcon: ({ color, size }) => (
