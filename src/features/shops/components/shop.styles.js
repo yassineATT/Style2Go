@@ -1,23 +1,40 @@
 import styled from "styled-components/native";
-import { Button, Card, Text } from "react-native-paper";
-import { FlatList, StatusBar, SafeAreaView } from "react-native";
+import { Card, Text } from "react-native-paper";
+import {
+  FlatList,
+  StatusBar,
+  SafeAreaView,
+  Image,
+  View,
+  Pressable,
+} from "react-native";
 
-export const BoutiqueCard = styled(Card)`
-  background-color: ${(props) => props.theme.colors.bg.primary};
+export const BoutiqueCard = styled(Pressable)`
+  width: 100%;
+  margin-bottom: 16px;
+  border-radius: 8px;
+  border: 2px solid #eeeeee;
+  background-color: #c2c2c2;
   margin-bottom: 16px;
 `;
 
-export const BoutiqueCover = styled(Card.Cover)`
-  padding: 8px;
-  background-color: ${(props) => props.theme.colors.bg.primary};
-  height: 160px;
+export const BoutiqueCover = styled(View)`
+  flex-direction: row;
+  align-items: center;
 `;
 
 export const BoutiqueTitle = styled(Text)`
   font-family: ${(props) => props.theme.fonts.body};
   text-align: left;
   font-size: 18px;
-  padding: 0 8px 8px 8px;
+  padding: 8px;
+`;
+
+export const BoutiqueImage = styled(Image)`
+  width: 340px
+  height: 180px;
+  border-radius: 5px;
+  margin: 8px 8px 0 8px;
 `;
 
 export const SearchContainer = styled.View`
@@ -66,5 +83,5 @@ export const CarouselText = styled.Text`
   font-family: ${(props) => props.theme.fonts.body};
   font-size: 18px;
   text-align: center;
-  margin-top: 16px;
+  margin-top: 8px;
 `;
