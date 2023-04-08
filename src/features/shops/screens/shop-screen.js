@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { Text, View } from "react-native";
+import React, { useState, useEffect } from "react";
+import { Text, View, ActivityIndicator } from "react-native";
 import {
   SafeArea,
   BackContainer,
@@ -14,84 +14,30 @@ import { Ionicons } from "@expo/vector-icons";
 import Carousel from "react-native-snap-carousel";
 import { Dimensions } from "react-native";
 import { Image } from "react-native";
+import { DataStore } from "aws-amplify";
+import { Shop, Product } from "../../../models";
+import { ProductItem } from "../components/product-item";
 
 export const ShopScreen = ({ route }) => {
-  const { id, name } = route.params;
+  const { id } = route.params;
 
-  const [shop, setShop] = useState({ name, id });
-  const [articles, setArticles] = useState([
-    {
-      id: "1",
-      name: "Air Force 1",
-      price: "100",
-      image: "https://i.imgur.com/2nCt3Sbl.jpg",
-    },
-    {
-      id: "2",
-      name: "Air Max 90",
-      price: "120",
-      image: "https://i.imgur.com/2nCt3Sbl.jpg",
-    },
-    {
-      id: "3",
-      name: "Air Max 95",
-      price: "130",
-      image: "https://i.imgur.com/2nCt3Sbl.jpg",
-    },
-    {
-      id: "4",
-      name: "Air Max 97",
-      price: "140",
-      image: "https://i.imgur.com/2nCt3Sbl.jpg",
-    },
-    {
-      id: "5",
-      name: "Air Max 270",
-      price: "150",
-      image: "https://i.imgur.com/2nCt3Sbl.jpg",
-    },
-    {
-      id: "6",
-      name: "Air Max 720",
-      price: "160",
-      image: "https://i.imgur.com/2nCt3Sbl.jpg",
-    },
-    {
-      id: "7",
-      name: "Air Max 360",
-      price: "170",
-      image: "https://i.imgur.com/2nCt3Sbl.jpg",
-    },
-    {
-      id: "8",
-      name: "Air Max 1",
-      price: "180",
-      image: "https://i.imgur.com/2nCt3Sbl.jpg",
-    },
-    {
-      id: "9",
-      name: "Air Max 2",
-      price: "190",
-      image: "https://i.imgur.com/2nCt3Sbl.jpg",
-    },
-    {
-      id: "10",
-      name: "Air Max 3",
-      price: "200",
-      image: "https://i.imgur.com/2nCt3Sbl.jpg",
-    },
-  ]);
+  const [shop, setShop] = useState(null);
+  const [product, setProduct] = useState([]);
 
-  const renderItem = ({ item }) => (
-    <View>
-      <Image
-        source={{ uri: item.image }}
-        style={{ width: 300, height: 300, borderRadius: 5 }}
-        resizeMode="cover"
-      />
-      <CarouselText>{item.name}</CarouselText>
-    </View>
-  );
+  useEffect(() => {
+    DataStore.query(Shop, id).then(setShop);
+
+    DataStore.query(Product).then((products) => {
+      const filteredProducts = products.filter((p) => p.shopID === id);
+      setProduct(filteredProducts);
+    });
+  }, []);
+
+  if (!shop) {
+    return <ActivityIndicator size="large" />;
+  }
+
+  const renderItem = ({ item }) => <ProductItem item={item} />;
 
   const navigation = useNavigation();
   return (
@@ -119,11 +65,11 @@ export const ShopScreen = ({ route }) => {
       </View>
       <CarouselContainer>
         <Carousel
-          data={articles}
+          data={product}
           renderItem={renderItem}
           sliderWidth={Dimensions.get("window").width}
-          itemWidth={300}
-          itemHeight={300}
+          itemWidth={250}
+          itemHeight={400}
         />
       </CarouselContainer>
     </SafeArea>
