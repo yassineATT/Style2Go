@@ -2,7 +2,7 @@ import React from "react";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { TabNavigator } from "./tab.navigator";
 import { ShopScreen } from "../../features/shops/screens/shop-screen";
-import { ProductScreen } from "../../features/shops/screens/product-screen";
+import { ProductScreen } from "../../features/products/screens/product-screen";
 
 const Stack = createNativeStackNavigator();
 
