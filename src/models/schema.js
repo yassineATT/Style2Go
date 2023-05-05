@@ -1,5 +1,106 @@
 export const schema = {
     "models": {
+        "User": {
+            "name": "User",
+            "fields": {
+                "id": {
+                    "name": "id",
+                    "isArray": false,
+                    "type": "ID",
+                    "isRequired": true,
+                    "attributes": []
+                },
+                "firstname": {
+                    "name": "firstname",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "lastname": {
+                    "name": "lastname",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "street": {
+                    "name": "street",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "city": {
+                    "name": "city",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "country": {
+                    "name": "country",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "postalCode": {
+                    "name": "postalCode",
+                    "isArray": false,
+                    "type": "Int",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "sub": {
+                    "name": "sub",
+                    "isArray": false,
+                    "type": "ID",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "createdAt": {
+                    "name": "createdAt",
+                    "isArray": false,
+                    "type": "AWSDateTime",
+                    "isRequired": false,
+                    "attributes": [],
+                    "isReadOnly": true
+                },
+                "updatedAt": {
+                    "name": "updatedAt",
+                    "isArray": false,
+                    "type": "AWSDateTime",
+                    "isRequired": false,
+                    "attributes": [],
+                    "isReadOnly": true
+                }
+            },
+            "syncable": true,
+            "pluralName": "Users",
+            "attributes": [
+                {
+                    "type": "model",
+                    "properties": {}
+                },
+                {
+                    "type": "auth",
+                    "properties": {
+                        "rules": [
+                            {
+                                "allow": "public",
+                                "operations": [
+                                    "create",
+                                    "update",
+                                    "delete",
+                                    "read"
+                                ]
+                            }
+                        ]
+                    }
+                }
+            ]
+        },
         "ProductDetail": {
             "name": "ProductDetail",
             "fields": {
@@ -326,5 +427,5 @@ export const schema = {
     },
     "nonModels": {},
     "codegenVersion": "3.3.4",
-    "version": "be9c428fa6d2e8b0396c4f964ed9e89f"
+    "version": "9b3d75178d7b791a66c587e7be9a48bd"
 };

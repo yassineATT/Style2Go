@@ -15,9 +15,10 @@ const Size = {
   "SIZE_42": "SIZE_42"
 };
 
-const { ProductDetail, Product, Shop } = initSchema(schema);
+const { User, ProductDetail, Product, Shop } = initSchema(schema);
 
 export {
+  User,
   ProductDetail,
   Product,
   Shop,

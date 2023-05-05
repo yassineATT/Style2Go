@@ -1,3 +1,14 @@
+type User @model @auth(rules: [{allow: public}]) {
+  id: ID!
+  firstname: String
+  lastname: String
+  street: String
+  city: String
+  country: String
+  postalCode: Int
+  sub: ID
+}
+
 enum Size {
   XS
   S
@@ -38,3 +49,4 @@ type Shop @model @auth(rules: [{allow: public}]) {
   long: String
   Products: [Product] @hasMany(indexName: "byShop", fields: ["id"])
 }
+ 
