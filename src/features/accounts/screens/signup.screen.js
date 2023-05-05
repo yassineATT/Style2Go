@@ -12,7 +12,7 @@ import {
 import AuthInput from "./../components/authinput";
 import { useForm } from "react-hook-form";
 import { useNavigation } from "@react-navigation/native";
-import { AuthenticationContext } from "./../../../services/authentification/auth.context";
+import { AuthenticationContext } from "../../../services/authentification/auth.context";
 
 const email_regex =
   /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;

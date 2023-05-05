@@ -12,7 +12,7 @@ import {
 import AuthInput from "../components/authinput";
 import { useForm } from "react-hook-form";
 import { useNavigation, useRoute } from "@react-navigation/native";
-import { AuthenticationContext } from "./../../../services/authentification/auth.context";
+import { AuthenticationContext } from "../../../services/authentification/auth.context";
 
 export const ResetPwdScreen = () => {
   const route = useRoute();
