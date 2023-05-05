@@ -1,6 +1,5 @@
-import React, { createContext } from "react";
+import React, { createContext, useState, useEffect } from "react";
 import { Auth, Hub } from "aws-amplify";
-import { useState, useEffect } from "react";
 import { Alert } from "react-native";
 
 export const AuthenticationContext = createContext();
@@ -9,6 +8,10 @@ export const AuthenticationContextProvider = ({ children }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
   const [user, setUser] = useState(null);
+
+  const showErrorAlert = (errorMessage, defaultMessage = "") => {
+    Alert.alert("", defaultMessage || errorMessage);
+  };
 
   // Check if user is logged in
 
@@ -44,14 +47,13 @@ export const AuthenticationContextProvider = ({ children }) => {
     setIsLoading(true);
     try {
       const response = await Auth.signIn(email, password);
+      console.log(response);
     } catch (error) {
-      if (error.code === "UserNotFoundException") {
-        Alert.alert("", "Utilisateur inconnu");
-      } else if (error.code === "NotAuthorizedException") {
-        Alert.alert("", "Mot de passe incorrect");
-      } else {
-        Alert.alert(error.message);
-      }
+      const errorMessages = {
+        UserNotFoundException: "Utilisateur inconnu",
+        NotAuthorizedException: "Mot de passe incorrect",
+      };
+      showErrorAlert(errorMessages[error.code]);
     }
     setIsLoading(false);
   };
@@ -72,11 +74,7 @@ export const AuthenticationContextProvider = ({ children }) => {
       });
       return { email };
     } catch (error) {
-      if (error.code === "UsernameExistsException") {
-        Alert.alert("", "Email déjà utilisé");
-      } else {
-        Alert.alert(error.message);
-      }
+      showErrorAlert(error.message, "Email déjà utilisé");
     }
   };
 
@@ -87,11 +85,7 @@ export const AuthenticationContextProvider = ({ children }) => {
       await Auth.confirmSignUp(email, code);
       return { email };
     } catch (error) {
-      if (error.code === "UserNotFoundException") {
-        Alert.alert("", "Utilisateur inconnu");
-      } else {
-        Alert.alert(error.message);
-      }
+      showErrorAlert(error.message, "Utilisateur inconnu");
     }
   };
 
@@ -102,17 +96,13 @@ export const AuthenticationContextProvider = ({ children }) => {
       await Auth.resendSignUp(email);
       Alert.alert("", "Code envoyé");
     } catch (error) {
-      switch (error.code) {
-        case "UserNotFoundException":
-          Alert.alert("", "Utilisateur inconnu");
-          break;
-        case "TooManyFailedAttemptsException":
-          Alert.alert("", "Trop de tentatives échouées, veuillez patienter");
-          break;
-        case "TooManyRequestsException":
-          Alert.alert("", "Trop de requêtes, veuillez patienter");
-          break;
-      }
+      const errorMessages = {
+        UserNotFoundException: "Utilisateur inconnu",
+        TooManyFailedAttemptsException:
+          "Trop de tentatives échouées, veuillez patienter",
+        TooManyRequestsException: "Trop de requêtes, veuillez patienter",
+      };
+      showErrorAlert(errorMessages[error.code]);
     }
   };
 
@@ -123,26 +113,16 @@ export const AuthenticationContextProvider = ({ children }) => {
       await Auth.forgotPasswordSubmit(email, code, password);
       return { email };
     } catch (error) {
-      switch (error.code) {
-        case "CodeMismatchException":
-          Alert.alert("", "Code incorrect");
-          break;
-        case "ExpiredCodeException":
-          Alert.alert("", "Code expiré");
-          break;
-        case "InvalidPasswordException":
-          Alert.alert("", "Mot de passe invalide");
-          break;
-        case "LimitExceededException":
-          Alert.alert("", "Limite dépassée");
-          break;
-        case "TooManyFailedAttemptsException":
-          Alert.alert("", "Trop de tentatives échouées, veuillez patienter");
-          break;
-        case "AttemptLimitExceededException":
-          Alert.alert("", "Limite de tentatives dépassée");
-          break;
-      }
+      const errorMessages = {
+        CodeMismatchException: "Code incorrect",
+        ExpiredCodeException: "Code expiré",
+        InvalidPasswordException: "Mot de passe invalide",
+        LimitExceededException: "Limite dépassée",
+        TooManyFailedAttemptsException:
+          "Trop de tentatives échouées, veuillez patienter",
+        AttemptLimitExceededException: "Limite de tentatives dépassée",
+      };
+      showErrorAlert(errorMessages[error.code]);
     }
   };
 
@@ -153,26 +133,16 @@ export const AuthenticationContextProvider = ({ children }) => {
       const response = await Auth.forgotPassword(email);
       return { email };
     } catch (error) {
-      switch (error.code) {
-        case "CodeMismatchException":
-          Alert.alert("", "Code incorrect");
-          break;
-        case "ExpiredCodeException":
-          Alert.alert("", "Code expiré");
-          break;
-        case "InvalidPasswordException":
-          Alert.alert("", "Mot de passe invalide");
-          break;
-        case "LimitExceededException":
-          Alert.alert(
-            "",
-            "Limite dépassée, veuillez patienter avant de réessayer"
-          );
-          break;
-        case "TooManyFailedAttemptsException":
-          Alert.alert("", "Trop de tentatives échouées, veuillez patienter");
-          break;
-      }
+      const errorMessages = {
+        CodeMismatchException: "Code incorrect",
+        ExpiredCodeException: "Code expiré",
+        InvalidPasswordException: "Mot de passe invalide",
+        LimitExceededException:
+          "Limite dépassée, veuillez patienter avant de réessayer",
+        TooManyFailedAttemptsException:
+          "Trop de tentatives échouées, veuillez patienter",
+      };
+      showErrorAlert(errorMessages[error.code]);
     }
   };
 
