@@ -16,4 +16,5 @@ export const StyledColorButton = styled.TouchableOpacity`
   border-width: 2px
   border-color: ${({ color }) => (color === "black" ? "white" : "black")};
   opacity: ${({ available }) => (available ? 1 : 0.3)};
+  disabled: ${({ available }) => (available ? "none" : "true")};
 `;
