@@ -13,15 +13,20 @@ import { Ionicons } from "@expo/vector-icons";
 import Carousel from "react-native-snap-carousel";
 import { ProductItem } from "../components/product-item";
 import { ShopContext } from "../../../services/shop/shop.context";
+import { ProductContext } from "../../../services/product/product.context";
 
 export const ShopScreen = ({ route }) => {
   const { id, name } = route.params;
   const navigation = useNavigation();
-  const { products, loading, getProducts } = useContext(ShopContext);
+  const { loading } = useContext(ShopContext);
+  const { getProducts, products } = useContext(ProductContext);
+
   const renderItem = ({ item }) => <ProductItem item={item} />;
 
   useEffect(() => {
-    getProducts(id);
+    console.log(id);
+    const req = getProducts(id);
+    console.log("boutique", req);
   }, []);
 
   if (loading) {
