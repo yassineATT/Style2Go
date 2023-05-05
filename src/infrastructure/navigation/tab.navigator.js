@@ -1,12 +1,25 @@
-import React from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { HomeScreen } from "../../features/shops/screens/home-screen";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
-import { SettingScreen } from "../../features/settings/screens/settings-screen";
+import { SettingScreen } from "../../features/settings/screens/settings.screen";
+import { ConfigProfileScreen } from "../../features/settings/screens/config-profile.screen";
+import { ProfileContext } from "../../services/saveProfile/profile.context";
 
 const Tab = createBottomTabNavigator();
 
 export const TabNavigator = () => {
+  const { isProfileRegistered } = useContext(ProfileContext);
+  const [reload, setReload] = useState(false);
+
+  const SettingsWrapper = () => {
+    return isProfileRegistered ? <SettingScreen /> : <ConfigProfileScreen />;
+  };
+
+  useEffect(() => {
+    setReload((prevReload) => !prevReload);
+  }, [isProfileRegistered]);
+
   return (
     <Tab.Navigator
       initialRouteName="Home"
@@ -59,7 +72,7 @@ export const TabNavigator = () => {
       />
       <Tab.Screen
         name="Settings"
-        component={SettingScreen}
+        component={SettingsWrapper}
         options={{
           tabBarLabel: "Paramètres",
           tabBarIcon: ({ color, size }) => (
