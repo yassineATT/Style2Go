@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext, useState } from "react";
 import { StatusBar } from "react-native";
 import {
   AccountCover,
@@ -13,17 +13,15 @@ import {
 } from "../components/account.styles";
 import AuthInput from "../components/authinput";
 import { useForm } from "react-hook-form";
+import { useNavigation } from "@react-navigation/native";
+import { AuthenticationContext } from "../../../services/authentification/auth.context";
 
 export const SignInScreen = () => {
-  const {
-    control,
-    handleSubmit,
-    formState: { errors },
-  } = useForm();
-
-  const handleSignIn = (data) => {
-    console.log(data);
-  };
+  const { control, handleSubmit } = useForm();
+  const { onLogin, isLoading } = useContext(AuthenticationContext);
+  const navigation = useNavigation();
+  const email_regex =
+    /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
 
   return (
     <>
@@ -38,7 +36,10 @@ export const SignInScreen = () => {
             textContentType="emailAddress"
             autoCapitalize="none"
             control={control}
-            rules={{ required: "Email is required" }}
+            rules={{
+              required: "Email is required",
+              pattern: { value: email_regex, message: "Email invalide" },
+            }}
           />
 
           <AuthInput
@@ -51,11 +52,16 @@ export const SignInScreen = () => {
               required: "Password is required",
             }}
           />
-          <AuthButton mode="contained" onPress={handleSubmit(handleSignIn)}>
-            <AuthTextWhite>Se Connecter</AuthTextWhite>
+          <AuthButton
+            mode="contained"
+            onPress={handleSubmit((data) => onLogin(data.email, data.password))}
+          >
+            <AuthTextWhite>
+              {isLoading ? "Connexion en cours..." : "Se connecter"}
+            </AuthTextWhite>
           </AuthButton>
         </SignInCard>
-        <SecondButton onPress={() => console.log("MDP oublié")}>
+        <SecondButton onPress={() => navigation.navigate("SendCode")}>
           <AuthTextBlack>Mot de passe oublié ?</AuthTextBlack>
         </SecondButton>
         <AuthSeparator>
@@ -63,7 +69,7 @@ export const SignInScreen = () => {
           <AuthTextBlack style={{ width: 50 }}>OU</AuthTextBlack>
           <AuthLine />
         </AuthSeparator>
-        <SecondButton onPress={() => console.log("Crée un compte")}>
+        <SecondButton onPress={() => navigation.navigate("SignUp")}>
           <AuthTextBlack>Crée un compte</AuthTextBlack>
         </SecondButton>
         <StatusBar style="auto" />

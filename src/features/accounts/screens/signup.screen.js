@@ -1,5 +1,5 @@
-import React from "react";
-import { StatusBar } from "react-native";
+import React, { useContext } from "react";
+import { StatusBar, Alert } from "react-native";
 import {
   SignUpCard,
   AuthButton,
@@ -11,35 +11,46 @@ import {
 } from "./../components/account.styles";
 import AuthInput from "./../components/authinput";
 import { useForm } from "react-hook-form";
+import { useNavigation } from "@react-navigation/native";
+import { AuthenticationContext } from "../../../services/authentification/auth.context";
 
 const email_regex =
   /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
 
 export const SignUpScreen = () => {
-  const {
-    control,
-    handleSubmit,
-    watch,
-    formState: { errors },
-  } = useForm();
-
+  const { onSignUp } = useContext(AuthenticationContext);
+  const navigation = useNavigation();
+  const { control, handleSubmit, watch } = useForm();
   const pwd = watch("password");
 
-  const handleSignUp = (data) => {
-    console.log(data);
+  const signUpPress = async (name, email, password) => {
+    const response = await onSignUp(name, email, password);
+    if (response) {
+      Alert.alert(
+        "Inscription réussie",
+        "Continuer pour confirmer votre email",
+        [
+          {
+            text: "Continuer",
+            onPress: () =>
+              navigation.navigate("ConfirmEmail", { email: email }),
+          },
+        ]
+      );
+    }
   };
 
   return (
     <>
       <SignUpCover>
         <SignUpCard>
-          <AuthTitle>Create account</AuthTitle>
+          <AuthTitle>Crée un compte</AuthTitle>
           <AuthInput
-            name="username"
+            name="name"
             placeholder="Username"
             keyboardType="default"
             control={control}
-            rules={{ required: "Username is required" }}
+            rules={{ required: "Name is required" }}
           />
           <AuthInput
             name="email"
@@ -54,35 +65,41 @@ export const SignUpScreen = () => {
           <AuthInput
             name="password"
             keyboardType="password"
-            placeholder="Password"
+            placeholder="Mot de passe"
             secureTextEntry
             control={control}
             isPassword={true}
             rules={{
               minLength: {
                 value: 6,
-                message: "Password must be at least 6 characters",
+                message: "Le mot de passe doit contenir au moins 6 caractères",
               },
-              required: "Password is required",
+              required: "Mot de passe requis",
             }}
           />
           <AuthInput
             name="password-repeat"
-            placeholder="Repeat Password"
+            placeholder="Répétez le mot de passe"
             keyboardType="password"
             secureTextEntry
             control={control}
             isPassword={true}
             rules={{
-              validate: (value) => value === pwd || "Passwords do not match",
+              validate: (value) =>
+                value === pwd || "Les mots de passe ne correspondent pas",
             }}
           />
-          <AuthButton mode="contained" onPress={handleSubmit(handleSignUp)}>
-            {/* handleSubmit vérifie d'abord les champs et les envoie à handleSignUp */}
+          <AuthButton
+            mode="contained"
+            onPress={handleSubmit(async (data) =>
+              signUpPress(data.name, data.email, data.password)
+            )}
+          >
+            {/* handleSubmit vérifie d'abord les champs et les envoie à signUpPress */}
             <AuthTextWhite>S'inscrire</AuthTextWhite>
           </AuthButton>
         </SignUpCard>
-        <SecondButton onPress={() => console.log("Compte Ok")}>
+        <SecondButton onPress={() => navigation.navigate("SignIn")}>
           <AuthTextBlack>J'ai déjà un compte</AuthTextBlack>
         </SecondButton>
         <StatusBar style="auto" />

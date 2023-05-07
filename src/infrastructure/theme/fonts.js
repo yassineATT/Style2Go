@@ -1,3 +1,3 @@
 export const fonts = {
-  body: "Inter_500Medium",
+  body: "Roboto_400Regular",
 };

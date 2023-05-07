@@ -1,0 +1,68 @@
+type BasketDetail @model @auth(rules: [{allow: public}]) {
+  id: ID!
+  quantity: Int
+  basketID: ID! @index(name: "byBasket")
+  ProductDetail: ProductDetail @hasOne
+}
+
+type Basket @model @auth(rules: [{allow: public}]) {
+  id: ID!
+  userID: ID! @index(name: "byUser")
+  shopID: ID! @index(name: "byShop")
+  BasketDetails: [BasketDetail] @hasMany(indexName: "byBasket", fields: ["id"])
+}
+
+type User @model @auth(rules: [{allow: public}]) {
+  id: ID!
+  firstname: String
+  lastname: String
+  street: String
+  city: String
+  country: String
+  postalCode: Int
+  sub: ID
+  Paniers: [Basket] @hasMany(indexName: "byUser", fields: ["id"])
+}
+
+enum Size {
+  XS
+  S
+  M
+  L
+  XL
+  XXL
+  SIZE_39
+  SIZE_40
+  SIZE_41
+  SIZE_42
+}
+
+type ProductDetail @model @auth(rules: [{allow: public}]) {
+  id: ID!
+  size: Size
+  color: String
+  quantity: Int
+  price: Float
+  productID: ID! @index(name: "byProduct")
+}
+
+type Product @model @auth(rules: [{allow: public}]) {
+  id: ID!
+  name: String!
+  image: String
+  description: String
+  shopID: ID! @index(name: "byShop")
+  ProductDetails: [ProductDetail] @hasMany(indexName: "byProduct", fields: ["id"])
+}
+
+type Shop @model @auth(rules: [{allow: public}]) {
+  id: ID!
+  name: String!
+  address: String
+  image: String
+  lat: String
+  long: String
+  Products: [Product] @hasMany(indexName: "byShop", fields: ["id"])
+  Baskets: [Basket] @hasMany(indexName: "byShop", fields: ["id"])
+}
+ 
