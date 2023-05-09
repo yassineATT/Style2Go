@@ -5,6 +5,7 @@ import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { SettingScreen } from "../../features/settings/screens/settings.screen";
 import { ConfigProfileScreen } from "../../features/settings/screens/config-profile.screen";
 import { ProfileContext } from "../../services/saveProfile/profile.context";
+import { BasketScreen } from "../../features/baskets/screens/basket.screen";
 
 const Tab = createBottomTabNavigator();
 
@@ -62,7 +63,7 @@ export const TabNavigator = () => {
       />
       <Tab.Screen
         name="Cart"
-        component={HomeScreen}
+        component={BasketScreen}
         options={{
           tabBarLabel: "Panier",
           tabBarIcon: ({ color, size }) => (
