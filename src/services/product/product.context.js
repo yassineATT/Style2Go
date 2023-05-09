@@ -19,7 +19,15 @@ export const ProductProvider = ({ children }) => {
       const filteredProducts = fetchedProducts.filter(
         (p) => p.shopID === shopId
       );
-      setProducts(filteredProducts);
+      const productDetailsPromises = filteredProducts.map(async (product) => {
+        const details = await DataStore.query(ProductDetail, (p) =>
+          p.productID.eq(product.id)
+        );
+        return { ...product, details };
+      });
+
+      const productsWithDetails = await Promise.all(productDetailsPromises);
+      setProducts(productsWithDetails);
     } catch (error) {
       console.log(error);
     } finally {
@@ -68,10 +76,30 @@ export const ProductProvider = ({ children }) => {
     } else {
       setSelectedColor(color);
     }
+    setSelectedSize(null);
   };
 
   const handleSizeChange = (size) => {
     setSelectedSize(selectedSize === size ? null : size);
+  };
+
+  const getSelectedProductPrice = () => {
+    if (selectedColor && selectedSize) {
+      const selectedProductDetail = productsDetails.find(
+        (detail) =>
+          detail.color === selectedColor && detail.size === selectedSize
+      );
+      return selectedProductDetail ? selectedProductDetail.price : null;
+    }
+    return null;
+  };
+
+  const getSelectedProductDetail = () => {
+    if (!selectedColor || !selectedSize) return null;
+
+    return productsDetails.find(
+      (detail) => detail.color === selectedColor && detail.size === selectedSize
+    );
   };
 
   const productContext = {
@@ -84,6 +112,8 @@ export const ProductProvider = ({ children }) => {
     getProductsDetails,
     getUniqueColors,
     handleColorChange,
+    getSelectedProductDetail,
+    getSelectedProductPrice,
     getUniqueSizes,
     handleSizeChange,
     setSelectedColor,
