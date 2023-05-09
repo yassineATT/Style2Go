@@ -1,5 +1,5 @@
 import React, { useContext, useState, useEffect, useMemo } from "react";
-import { View, Dimensions } from "react-native";
+import { View, Dimensions, Alert } from "react-native";
 import {
   SafeArea,
   BackContainer,
@@ -14,9 +14,11 @@ import { ColorButton } from "../components/color-button";
 import { ColorButtonContainer } from "../components/product-detail.styles";
 import { Modal, FlatList, TouchableOpacity, Text } from "react-native";
 import { ProductContext } from "../../../services/product/product.context";
+import { AuthenticationContext } from "../../../services/authentification/auth.context";
+import { BasketContext } from "../../../services/basket/basket.context";
 
 export const ProductScreen = ({ route }) => {
-  const { id, name, price, image, description } = route.params;
+  const { id, name, shop, image, description } = route.params;
   const {
     getProductsDetails,
     productsDetails,
@@ -25,11 +27,16 @@ export const ProductScreen = ({ route }) => {
     selectedSize,
     handleColorChange,
     getUniqueColors,
+    getSelectedProductPrice,
     getUniqueSizes,
     handleSizeChange,
     setSelectedColor,
     setSelectedSize,
   } = useContext(ProductContext);
+  const { addToBasket } = useContext(BasketContext);
+  const { user } = useContext(AuthenticationContext);
+  const navigation = useNavigation();
+
   const renderItem = ({ item }) => <ProductItem item={item} />;
 
   const [isSizeModalVisible, setIsSizeModalVisible] = useState(false);
@@ -40,6 +47,13 @@ export const ProductScreen = ({ route }) => {
     setSelectedSize(null);
     console.log(productsDetails);
   }, []);
+
+  const handleAddToBasket = () => {
+    const selectedProduct = productsDetails.find(
+      (detail) => detail.color === selectedColor && detail.size === selectedSize
+    );
+    addToBasket(selectedProduct, shop, user, navigation);
+  };
 
   const uniqueColors = useMemo(
     () => getUniqueColors(productsDetails),
@@ -67,7 +81,6 @@ export const ProductScreen = ({ route }) => {
     );
   };
 
-  const navigation = useNavigation();
   return (
     <SafeArea>
       <View>
@@ -81,12 +94,17 @@ export const ProductScreen = ({ route }) => {
         <ShopName>{name}</ShopName>
         <CarouselContainer>
           <Carousel
-            data={[{ name, price, image, description }]}
+            data={[{ name, image, description }]}
             renderItem={renderItem}
             sliderWidth={Dimensions.get("window").width}
             itemWidth={250}
             itemHeight={450}
           />
+          <Text style={{ padding: 16 }}>
+            {getSelectedProductPrice()
+              ? `Prix : ${getSelectedProductPrice()}€`
+              : "Sélectionnez une couleur puis une taille"}
+          </Text>
         </CarouselContainer>
         <ColorButtonContainer>
           {uniqueColors.map((color) => {
@@ -141,6 +159,18 @@ export const ProductScreen = ({ route }) => {
           </Text>
         </TouchableOpacity>
       </View>
+      <TouchableOpacity
+        onPress={handleAddToBasket}
+        disabled={!selectedColor || !selectedSize}
+        style={{
+          backgroundColor: selectedColor && selectedSize ? "black" : "grey",
+          padding: 16,
+          borderRadius: 5,
+          alignItems: "center",
+        }}
+      >
+        <Text style={{ color: "white" }}>Ajouter au panier</Text>
+      </TouchableOpacity>
     </SafeArea>
   );
 };
