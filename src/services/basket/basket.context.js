@@ -1,12 +1,22 @@
-import React, { createContext, useState } from "react";
-import { Basket, BasketDetail } from "../../models";
+import React, { createContext, useState, useContext, useEffect } from "react";
+import {
+  Basket,
+  BasketDetail,
+  Product,
+  Shop,
+  ProductDetail,
+} from "../../models";
 import { DataStore } from "aws-amplify";
 import { Alert } from "react-native";
+import { AuthenticationContext } from "../authentification/auth.context";
 
 export const BasketContext = createContext();
 
 export const BasketProvider = ({ children }) => {
   const [basket, setBasket] = useState([]);
+  const [basketList, setBasketList] = useState([]);
+  const [basketUpdated, setBasketUpdated] = useState(false);
+  const { user } = useContext(AuthenticationContext);
 
   const addToBasket = async (selectedProduct, shop, user, navigation) => {
     try {
@@ -30,6 +40,7 @@ export const BasketProvider = ({ children }) => {
         basketDetailProductDetailId: selectedProduct.id,
       });
       await DataStore.save(newBasketDetail);
+      setBasketUpdated((prev) => !prev);
 
       Alert.alert(
         "Article ajouté au panier",
@@ -52,10 +63,94 @@ export const BasketProvider = ({ children }) => {
     }
   };
 
+  const fetchShop = async (shopID) => {
+    return await DataStore.query(Shop, shopID);
+  };
+
+  const fetchProduct = async (productID) => {
+    return await DataStore.query(Product, productID);
+  };
+
+  const fetchBasketDetails = async (basketID) => {
+    return await DataStore.query(BasketDetail, (bd) =>
+      bd.basketID.eq(basketID)
+    );
+  };
+
+  const fetchProductDetail = async (productDetailID) => {
+    const productDetail = await DataStore.query(ProductDetail, productDetailID);
+    if (!productDetail) {
+      console.error(`No ProductDetail found with ID ${productDetailID}`);
+      return null;
+    }
+
+    const product = await fetchProduct(productDetail.productID);
+
+    return {
+      ...productDetail,
+      Product: product,
+    };
+  };
+
+  const calculateTotalPrice = (basketDetails) => {
+    return basketDetails.reduce(
+      (total, bd) =>
+        bd.productDetail ? total + bd.quantity * bd.productDetail.price : total,
+      0
+    );
+  };
+
+  const fetchBasketData = async (userID) => {
+    try {
+      const baskets = await DataStore.query(Basket, (b) => b.userID.eq(userID));
+      const basketsWithShopData = await Promise.all(
+        baskets.map(async (basket) => {
+          const shop = await fetchShop(basket.shopID);
+          const basketDetails = await fetchBasketDetails(basket.id);
+          console.log("basketDetails", basketDetails);
+
+          const basketDetailsWithProductData = await Promise.all(
+            basketDetails.map(async (bd) => {
+              const productDetail = await fetchProductDetail(
+                bd.basketDetailProductDetailId
+              );
+              return {
+                ...bd,
+                productDetail: productDetail,
+              };
+            })
+          );
+
+          const totalPrice = calculateTotalPrice(basketDetailsWithProductData);
+
+          return {
+            ...basket,
+            Shop: shop,
+            BasketDetails: basketDetailsWithProductData,
+            totalPrice,
+          };
+        })
+      );
+
+      setBasketList(basketsWithShopData);
+    } catch (error) {
+      console.error("Error fetching basket data:", error);
+    }
+  };
+
+  useEffect(() => {
+    if (user) {
+      fetchBasketData(user.attributes.sub);
+    }
+  }, [basketUpdated]);
+
   const basketProvider = {
     basket,
     addToBasket,
     setBasket,
+    fetchBasketData,
+    basketList,
+    user,
   };
 
   return (
