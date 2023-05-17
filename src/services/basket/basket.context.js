@@ -37,7 +37,7 @@ export const BasketProvider = ({ children }) => {
       const newBasketDetail = new BasketDetail({
         quantity: 1,
         basketID: basket.id,
-        basketDetailProductDetailId: selectedProduct.id,
+        productdetailID: selectedProduct.id,
       });
       await DataStore.save(newBasketDetail);
       setBasketUpdated((prev) => !prev);
@@ -102,17 +102,18 @@ export const BasketProvider = ({ children }) => {
 
   const fetchBasketData = async (userID) => {
     try {
+      DataStore.start();
       const baskets = await DataStore.query(Basket, (b) => b.userID.eq(userID));
+      console.log("BasketsUser:", baskets);
       const basketsWithShopData = await Promise.all(
         baskets.map(async (basket) => {
           const shop = await fetchShop(basket.shopID);
           const basketDetails = await fetchBasketDetails(basket.id);
-          console.log("basketDetails", basketDetails);
 
           const basketDetailsWithProductData = await Promise.all(
             basketDetails.map(async (bd) => {
               const productDetail = await fetchProductDetail(
-                bd.basketDetailProductDetailId
+                bd.productdetailID
               );
               return {
                 ...bd,
@@ -133,8 +134,36 @@ export const BasketProvider = ({ children }) => {
       );
 
       setBasketList(basketsWithShopData);
+
+      console.log("Baskets with shop data:", basketsWithShopData);
     } catch (error) {
       console.error("Error fetching basket data:", error);
+    }
+  };
+
+  const deleteBasket = async (basketID) => {
+    try {
+      const basketDetails = await DataStore.query(BasketDetail, (bd) =>
+        bd.basketID.eq(basketID)
+      );
+
+      const deleteDetailsPromises = basketDetails.map(async (bd) => {
+        const detailExists = await DataStore.query(BasketDetail, bd.id);
+        if (detailExists) {
+          return DataStore.delete(BasketDetail, bd.id);
+        }
+      });
+
+      await Promise.all(deleteDetailsPromises);
+
+      const basketExists = await DataStore.query(Basket, basketID);
+      if (basketExists) {
+        await DataStore.delete(Basket, basketID);
+      }
+
+      return fetchBasketData(user.attributes.sub);
+    } catch (error) {
+      console.error("Failed to delete basket: ", error);
     }
   };
 
@@ -142,13 +171,14 @@ export const BasketProvider = ({ children }) => {
     if (user) {
       fetchBasketData(user.attributes.sub);
     }
-  }, [basketUpdated]);
+  }, [user, basketUpdated]);
 
   const basketProvider = {
     basket,
     addToBasket,
     setBasket,
     fetchBasketData,
+    deleteBasket,
     basketList,
     user,
   };
