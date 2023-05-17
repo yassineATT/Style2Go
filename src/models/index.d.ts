@@ -1,6 +1,15 @@
 import { ModelInit, MutableModel, __modelMeta__, ManagedIdentifier } from "@aws-amplify/datastore";
 // @ts-ignore
-import { LazyLoading, LazyLoadingDisabled, AsyncItem, AsyncCollection } from "@aws-amplify/datastore";
+import { LazyLoading, LazyLoadingDisabled, AsyncCollection } from "@aws-amplify/datastore";
+
+export enum StatusOrder {
+  NEW = "NEW",
+  PREPARATION = "PREPARATION",
+  COMMAND_READY = "COMMAND_READY",
+  ACCEPT = "ACCEPT",
+  RETRIEVE = "RETRIEVE",
+  CANCEL = "CANCEL"
+}
 
 export enum Size {
   XS = "XS",
@@ -17,6 +26,78 @@ export enum Size {
 
 
 
+type EagerOrderDetail = {
+  readonly [__modelMeta__]: {
+    identifier: ManagedIdentifier<OrderDetail, 'id'>;
+    readOnlyFields: 'createdAt' | 'updatedAt';
+  };
+  readonly id: string;
+  readonly orderID: string;
+  readonly quantite?: number | null;
+  readonly prix_unite?: number | null;
+  readonly productdetailID: string;
+  readonly createdAt?: string | null;
+  readonly updatedAt?: string | null;
+}
+
+type LazyOrderDetail = {
+  readonly [__modelMeta__]: {
+    identifier: ManagedIdentifier<OrderDetail, 'id'>;
+    readOnlyFields: 'createdAt' | 'updatedAt';
+  };
+  readonly id: string;
+  readonly orderID: string;
+  readonly quantite?: number | null;
+  readonly prix_unite?: number | null;
+  readonly productdetailID: string;
+  readonly createdAt?: string | null;
+  readonly updatedAt?: string | null;
+}
+
+export declare type OrderDetail = LazyLoading extends LazyLoadingDisabled ? EagerOrderDetail : LazyOrderDetail
+
+export declare const OrderDetail: (new (init: ModelInit<OrderDetail>) => OrderDetail) & {
+  copyOf(source: OrderDetail, mutator: (draft: MutableModel<OrderDetail>) => MutableModel<OrderDetail> | void): OrderDetail;
+}
+
+type EagerOrder = {
+  readonly [__modelMeta__]: {
+    identifier: ManagedIdentifier<Order, 'id'>;
+    readOnlyFields: 'createdAt' | 'updatedAt';
+  };
+  readonly id: string;
+  readonly userID: string;
+  readonly shopID: string;
+  readonly status?: StatusOrder | keyof typeof StatusOrder | null;
+  readonly total?: number | null;
+  readonly shipping_cost?: number | null;
+  readonly OrderDetails?: (OrderDetail | null)[] | null;
+  readonly createdAt?: string | null;
+  readonly updatedAt?: string | null;
+}
+
+type LazyOrder = {
+  readonly [__modelMeta__]: {
+    identifier: ManagedIdentifier<Order, 'id'>;
+    readOnlyFields: 'createdAt' | 'updatedAt';
+  };
+  readonly id: string;
+  readonly userID: string;
+  readonly shopID: string;
+  readonly status?: StatusOrder | keyof typeof StatusOrder | null;
+  readonly total?: number | null;
+  readonly shipping_cost?: number | null;
+  readonly OrderDetails: AsyncCollection<OrderDetail>;
+  readonly createdAt?: string | null;
+  readonly updatedAt?: string | null;
+}
+
+export declare type Order = LazyLoading extends LazyLoadingDisabled ? EagerOrder : LazyOrder
+
+export declare const Order: (new (init: ModelInit<Order>) => Order) & {
+  copyOf(source: Order, mutator: (draft: MutableModel<Order>) => MutableModel<Order> | void): Order;
+}
+
 type EagerBasketDetail = {
   readonly [__modelMeta__]: {
     identifier: ManagedIdentifier<BasketDetail, 'id'>;
@@ -25,10 +106,9 @@ type EagerBasketDetail = {
   readonly id: string;
   readonly quantity?: number | null;
   readonly basketID: string;
-  readonly ProductDetail?: ProductDetail | null;
+  readonly productdetailID: string;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
-  readonly basketDetailProductDetailId?: string | null;
 }
 
 type LazyBasketDetail = {
@@ -39,10 +119,9 @@ type LazyBasketDetail = {
   readonly id: string;
   readonly quantity?: number | null;
   readonly basketID: string;
-  readonly ProductDetail: AsyncItem<ProductDetail | undefined>;
+  readonly productdetailID: string;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
-  readonly basketDetailProductDetailId?: string | null;
 }
 
 export declare type BasketDetail = LazyLoading extends LazyLoadingDisabled ? EagerBasketDetail : LazyBasketDetail
@@ -51,50 +130,14 @@ export declare const BasketDetail: (new (init: ModelInit<BasketDetail>) => Baske
   copyOf(source: BasketDetail, mutator: (draft: MutableModel<BasketDetail>) => MutableModel<BasketDetail> | void): BasketDetail;
 }
 
-type EagerProductDetail = {
-  readonly [__modelMeta__]: {
-    identifier: ManagedIdentifier<ProductDetail, 'id'>;
-    readOnlyFields: 'createdAt' | 'updatedAt';
-  };
-  readonly id: string;
-  readonly size?: Size | keyof typeof Size | null;
-  readonly color?: string | null;
-  readonly quantity?: number | null;
-  readonly price?: number | null;
-  readonly productID: string;
-  readonly createdAt?: string | null;
-  readonly updatedAt?: string | null;
-}
-
-type LazyProductDetail = {
-  readonly [__modelMeta__]: {
-    identifier: ManagedIdentifier<ProductDetail, 'id'>;
-    readOnlyFields: 'createdAt' | 'updatedAt';
-  };
-  readonly id: string;
-  readonly size?: Size | keyof typeof Size | null;
-  readonly color?: string | null;
-  readonly quantity?: number | null;
-  readonly price?: number | null;
-  readonly productID: string;
-  readonly createdAt?: string | null;
-  readonly updatedAt?: string | null;
-}
-
-export declare type ProductDetail = LazyLoading extends LazyLoadingDisabled ? EagerProductDetail : LazyProductDetail
-
-export declare const ProductDetail: (new (init: ModelInit<ProductDetail>) => ProductDetail) & {
-  copyOf(source: ProductDetail, mutator: (draft: MutableModel<ProductDetail>) => MutableModel<ProductDetail> | void): ProductDetail;
-}
-
 type EagerBasket = {
   readonly [__modelMeta__]: {
     identifier: ManagedIdentifier<Basket, 'id'>;
     readOnlyFields: 'createdAt' | 'updatedAt';
   };
   readonly id: string;
-  readonly userID: string;
   readonly shopID: string;
+  readonly userID: string;
   readonly BasketDetails?: (BasketDetail | null)[] | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
@@ -106,8 +149,8 @@ type LazyBasket = {
     readOnlyFields: 'createdAt' | 'updatedAt';
   };
   readonly id: string;
-  readonly userID: string;
   readonly shopID: string;
+  readonly userID: string;
   readonly BasketDetails: AsyncCollection<BasketDetail>;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
@@ -132,7 +175,8 @@ type EagerUser = {
   readonly country?: string | null;
   readonly postalCode?: number | null;
   readonly sub?: string | null;
-  readonly Paniers?: (Basket | null)[] | null;
+  readonly Baskets?: (Basket | null)[] | null;
+  readonly Orders?: (Order | null)[] | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }
@@ -150,7 +194,8 @@ type LazyUser = {
   readonly country?: string | null;
   readonly postalCode?: number | null;
   readonly sub?: string | null;
-  readonly Paniers: AsyncCollection<Basket>;
+  readonly Baskets: AsyncCollection<Basket>;
+  readonly Orders: AsyncCollection<Order>;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }
@@ -159,6 +204,46 @@ export declare type User = LazyLoading extends LazyLoadingDisabled ? EagerUser :
 
 export declare const User: (new (init: ModelInit<User>) => User) & {
   copyOf(source: User, mutator: (draft: MutableModel<User>) => MutableModel<User> | void): User;
+}
+
+type EagerProductDetail = {
+  readonly [__modelMeta__]: {
+    identifier: ManagedIdentifier<ProductDetail, 'id'>;
+    readOnlyFields: 'createdAt' | 'updatedAt';
+  };
+  readonly id: string;
+  readonly size?: Size | keyof typeof Size | null;
+  readonly color?: string | null;
+  readonly quantity?: number | null;
+  readonly price?: number | null;
+  readonly productID: string;
+  readonly OrderDetails?: (OrderDetail | null)[] | null;
+  readonly BasketDetails?: (BasketDetail | null)[] | null;
+  readonly createdAt?: string | null;
+  readonly updatedAt?: string | null;
+}
+
+type LazyProductDetail = {
+  readonly [__modelMeta__]: {
+    identifier: ManagedIdentifier<ProductDetail, 'id'>;
+    readOnlyFields: 'createdAt' | 'updatedAt';
+  };
+  readonly id: string;
+  readonly size?: Size | keyof typeof Size | null;
+  readonly color?: string | null;
+  readonly quantity?: number | null;
+  readonly price?: number | null;
+  readonly productID: string;
+  readonly OrderDetails: AsyncCollection<OrderDetail>;
+  readonly BasketDetails: AsyncCollection<BasketDetail>;
+  readonly createdAt?: string | null;
+  readonly updatedAt?: string | null;
+}
+
+export declare type ProductDetail = LazyLoading extends LazyLoadingDisabled ? EagerProductDetail : LazyProductDetail
+
+export declare const ProductDetail: (new (init: ModelInit<ProductDetail>) => ProductDetail) & {
+  copyOf(source: ProductDetail, mutator: (draft: MutableModel<ProductDetail>) => MutableModel<ProductDetail> | void): ProductDetail;
 }
 
 type EagerProduct = {
@@ -210,6 +295,7 @@ type EagerShop = {
   readonly long?: string | null;
   readonly Products?: (Product | null)[] | null;
   readonly Baskets?: (Basket | null)[] | null;
+  readonly Orders?: (Order | null)[] | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }
@@ -227,6 +313,7 @@ type LazyShop = {
   readonly long?: string | null;
   readonly Products: AsyncCollection<Product>;
   readonly Baskets: AsyncCollection<Basket>;
+  readonly Orders: AsyncCollection<Order>;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }
