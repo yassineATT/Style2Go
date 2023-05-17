@@ -1,5 +1,19 @@
-import React, { useState } from "react";
-import { View, Text, TouchableOpacity, Modal, Button } from "react-native";
+import React, { useState, useContext } from "react";
+import { View, Text, Modal, Button } from "react-native";
+import { IconButton, Checkbox } from "react-native-paper";
+import {
+  Container,
+  ShopImage,
+  ColumnView,
+  RowView,
+  ModalContainer,
+  ModalContent,
+  DetailButton,
+  CommandeButton,
+  TextButton,
+  RightContainer,
+} from "./basket.styles";
+import { BasketContext } from "../../../services/basket/basket.context";
 
 const BasketItemDetails = ({ basketDetails }) => {
   return (
@@ -17,16 +31,42 @@ const BasketItemDetails = ({ basketDetails }) => {
   );
 };
 
-export const BasketItem = ({ item }) => {
+export const BasketItem = ({ item, onSelectionChange }) => {
   const [modalVisible, setModalVisible] = useState(false);
+  const [isSelected, setSelection] = useState(false);
+  const { deleteBasket } = useContext(BasketContext);
+
+  const handleSelectionChange = (newSelection) => {
+    setSelection(newSelection);
+    onSelectionChange(item, newSelection);
+  };
+
+  const handleDeleteBasket = async () => {
+    await deleteBasket(item.id);
+    handleSelectionChange(false);
+  };
 
   return (
-    <View>
-      <Text>{item.Shop.name}</Text>
-      <Text>Prix total: {item.totalPrice.toFixed(2)}€</Text>
-      <TouchableOpacity onPress={() => setModalVisible(true)}>
-        <Text>Détail</Text>
-      </TouchableOpacity>
+    <Container>
+      <ShopImage source={{ uri: item.Shop.image }} />
+      <ColumnView>
+        <RowView>
+          <DetailButton title="Detail" onPress={() => setModalVisible(true)}>
+            <TextButton>Détail</TextButton>
+          </DetailButton>
+          <TextButton>Total : {item.totalPrice.toFixed(2)}€</TextButton>
+        </RowView>
+        <CommandeButton>
+          <TextButton>Commander</TextButton>
+        </CommandeButton>
+      </ColumnView>
+      <RightContainer>
+        <Checkbox
+          status={isSelected ? "checked" : "unchecked"}
+          onPress={() => handleSelectionChange(!isSelected)}
+        />
+        <IconButton icon="delete" onPress={handleDeleteBasket} />
+      </RightContainer>
       <Modal
         animationType="slide"
         transparent={true}
@@ -35,36 +75,13 @@ export const BasketItem = ({ item }) => {
           setModalVisible(!modalVisible);
         }}
       >
-        <View
-          style={{
-            flex: 1,
-            justifyContent: "center",
-            alignItems: "center",
-            marginTop: 22,
-          }}
-        >
-          <View
-            style={{
-              margin: 20,
-              backgroundColor: "white",
-              borderRadius: 20,
-              padding: 35,
-              alignItems: "center",
-              shadowColor: "#000",
-              shadowOffset: {
-                width: 0,
-                height: 2,
-              },
-              shadowOpacity: 0.25,
-              shadowRadius: 4,
-              elevation: 5,
-            }}
-          >
+        <ModalContainer>
+          <ModalContent>
             <BasketItemDetails basketDetails={item.BasketDetails} />
             <Button title="Fermer" onPress={() => setModalVisible(false)} />
-          </View>
-        </View>
+          </ModalContent>
+        </ModalContainer>
       </Modal>
-    </View>
+    </Container>
   );
 };
