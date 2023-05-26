@@ -22,7 +22,7 @@ const StyledTextInput = styled(TextInput).attrs((props) => ({
 `;
 
 const AuthInput = ({
-  // Récupération des props
+  // props de authinput
   control,
   name,
   rules = {},
