@@ -17,12 +17,15 @@ export const BasketProvider = ({ children }) => {
   const [basketList, setBasketList] = useState([]);
   const [basketUpdated, setBasketUpdated] = useState(false);
   const { user } = useContext(AuthenticationContext);
+  const [selectedBaskets, setSelectedBaskets] = useState([]);
+  const [total, setTotal] = useState(0);
 
   const addToBasket = async (selectedProduct, shop, user, navigation) => {
     try {
       const userBaskets = await DataStore.query(Basket, (b) =>
         b.userID.eq(user.attributes.sub)
       );
+
       const existingBasket = userBaskets.filter((b) => b.shopID === shop);
       let basket;
       if (existingBasket.length === 0) {
@@ -161,17 +164,39 @@ export const BasketProvider = ({ children }) => {
         await DataStore.delete(Basket, basketID);
       }
 
+      await DataStore.start();
+
       return fetchBasketData(user.attributes.sub);
     } catch (error) {
       console.error("Failed to delete basket: ", error);
     }
   };
 
+  const handleSelectionChange = (item, isSelected) => {
+    setSelectedBaskets((currentItems) => {
+      if (isSelected) {
+        return [...currentItems, item];
+      } else {
+        return currentItems.filter((i) => i !== item);
+      }
+    });
+  };
+  console.log("selectedBaskets", selectedBaskets);
+
+  useEffect(() => {
+    const total = selectedBaskets.reduce((sum, selectedBasket) => {
+      console.log("Adding:", selectedBasket.totalPrice);
+      return sum + selectedBasket.totalPrice;
+    }, 0);
+    console.log("Total:", total);
+    setTotal(total);
+  }, [selectedBaskets]);
+
   useEffect(() => {
     if (user) {
       fetchBasketData(user.attributes.sub);
     }
-  }, [user, basketUpdated]);
+  }, [basketUpdated, user]);
 
   const basketProvider = {
     basket,
@@ -181,6 +206,9 @@ export const BasketProvider = ({ children }) => {
     deleteBasket,
     basketList,
     user,
+    selectedBaskets,
+    handleSelectionChange,
+    total,
   };
 
   return (
