@@ -29,7 +29,7 @@ export const BasketScreen = () => {
   console.log("baket", selectedBaskets);
   return (
     <SafeArea>
-      <Header>MON PANIER</Header>
+      <Header>mon panier</Header>
       {basketList.lenght === 0 ? (
         <TextEmpty>Panier vide</TextEmpty>
       ) : (

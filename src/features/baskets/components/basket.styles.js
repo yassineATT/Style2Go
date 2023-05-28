@@ -8,6 +8,7 @@ export const Header = styled.Text`
   color: black;
   margin: 20px;
   text-align: center;
+  text-transform: uppercase;
 `;
 
 export const DetailButton = styled.TouchableOpacity`
