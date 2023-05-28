@@ -2,6 +2,7 @@ import React, { createContext, useState, useContext, useEffect } from "react";
 import { User } from "../../models";
 import { DataStore } from "aws-amplify";
 import { AuthenticationContext } from "../authentification/auth.context";
+import { Alert } from "react-native";
 
 export const ProfileContext = createContext();
 
@@ -26,12 +27,12 @@ export const ProfileProvider = ({ children }) => {
           city,
           country,
           postalCode,
-          sub: user?.attributes?.sub,
+          sub: user?.attributes?.sub, // sub est l'id unique de l'utilisateur
         })
       );
-      console.log("User saved successfully:", newUser);
     } catch (error) {
-      console.log("Error saving user:", error);
+      Alert.alert("Erreur lors de la sauvegarde du profil", errorMessage);
+      console.error("Erreur lors de la sauvegarde du profil:", error);
     }
   };
 
@@ -58,15 +59,12 @@ export const ProfileProvider = ({ children }) => {
       const queryResult = await DataStore.query(User, (u) => u.sub.eq(sub));
       console.log("User profile found", queryResult);
       if (queryResult.length === 0) {
-        console.log("User profile not found", sub, isProfileRegistered);
         return false;
       } else {
-        console.log("User profile found", sub, isProfileRegistered);
         return true;
       }
     } catch (error) {
-      console.error("Error checking user profile:", error);
-      console.log("User profile not found", sub, isProfileRegistered);
+      console.error("Error checking user profile:", error, sub);
       return false;
     }
   };
@@ -74,7 +72,6 @@ export const ProfileProvider = ({ children }) => {
   useEffect(() => {
     if (user) {
       checkUserProfile(user.attributes.sub).then((result) => {
-        console.log("User profile registered", result);
         setIsProfileRegistered(result);
       });
     }
