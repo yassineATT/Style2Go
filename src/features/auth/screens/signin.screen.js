@@ -10,7 +10,7 @@ import {
   AuthTextWhite,
   AuthSeparator,
   AuthLine,
-} from "../components/account.styles";
+} from "../components/auth.styles";
 import AuthInput from "../components/authinput";
 import { useForm } from "react-hook-form";
 import { useNavigation } from "@react-navigation/native";
@@ -33,7 +33,6 @@ export const SignInScreen = () => {
             placeholder="Email"
             keyboardType="email-address"
             autoCompleteType="email"
-            textContentType="emailAddress"
             autoCapitalize="none"
             control={control}
             rules={{

@@ -8,7 +8,7 @@ import {
   SecondButton,
   AuthTextWhite,
   SignUpCover,
-} from "../components/account.styles";
+} from "../components/auth.styles";
 import AuthInput from "../components/authinput";
 import { useForm } from "react-hook-form";
 import { useNavigation } from "@react-navigation/native";

@@ -1,5 +1,5 @@
 import React from "react";
-import { StyledColorButton } from "./product-detail.styles";
+import { StyledColorButton } from "./product.styles";
 
 export const ColorButton = ({ color, available, selected, onPress }) => {
   return (

@@ -8,7 +8,7 @@ import {
   AuthTextWhite,
   ResetPwdCover,
   ResetPwdCard,
-} from "../components/account.styles";
+} from "../components/auth.styles";
 import AuthInput from "../components/authinput";
 import { useForm } from "react-hook-form";
 import { useNavigation, useRoute } from "@react-navigation/native";
