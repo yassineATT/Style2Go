@@ -9,11 +9,12 @@ export const AuthenticationContextProvider = ({ children }) => {
   const [error, setError] = useState(null);
   const [user, setUser] = useState(null);
 
-  const showErrorAlert = (errorMessage, defaultMessage = "") => {
+  const showErrorAlert = (
+    errorMessage,
+    defaultMessage = "Erreur contacter le support"
+  ) => {
     Alert.alert("", defaultMessage || errorMessage);
   };
-
-  // Check if user is logged in
 
   const onCheckAuth = async () => {
     try {
@@ -22,6 +23,7 @@ export const AuthenticationContextProvider = ({ children }) => {
       });
       setUser(authUser);
     } catch (error) {
+      console.log("ca maarhce pas");
       setUser(null);
     }
   };
