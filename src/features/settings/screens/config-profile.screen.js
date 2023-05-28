@@ -77,11 +77,16 @@ export const ConfigProfileScreen = () => {
           }}
           query={{ key: GOOGLE_API_KEY, language: "fr" }}
           fetchDetails={true}
-          onFail={(error) => console.log(error)}
-          onNotFound={() => console.log("no results")}
+          onFail={() =>
+            Alert.alert(
+              "Erreur",
+              "Une erreur est survenue lors de la saisie de l'adresse. Veuillez réessayer."
+            )
+          }
+          onNotFound={() => Alert.alert("Aucun résultat")}
           listEmptyComponent={() => (
             <View style={{ flex: 1 }}>
-              <Text>No results were found</Text>
+              <Text>Aucun résultat trouver</Text>
             </View>
           )}
           styles={{
