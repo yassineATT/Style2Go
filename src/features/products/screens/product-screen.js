@@ -1,5 +1,11 @@
 import React, { useContext, useState, useEffect, useMemo } from "react";
-import { View, Dimensions } from "react-native";
+import {
+  View,
+  Dimensions,
+  Modal,
+  FlatList,
+  TouchableOpacity,
+} from "react-native";
 import {
   SafeArea,
   BackContainer,
@@ -11,35 +17,56 @@ import { Ionicons } from "@expo/vector-icons";
 import Carousel from "react-native-snap-carousel";
 import { ProductItem } from "../../shops/components/product-item";
 import { ColorButton } from "../components/color-button";
-import { ColorButtonContainer } from "../components/product-detail.styles";
-import { Modal, FlatList, TouchableOpacity, Text } from "react-native";
+import {
+  ColorButtonContainer,
+  AddToBasketButton,
+  AddToBasketButtonText,
+  SizeText,
+  PriceText,
+  ModalBackground,
+  ModalContent,
+} from "../components/product.styles";
 import { ProductContext } from "../../../services/product/product.context";
+import { AuthenticationContext } from "../../../services/authentification/auth.context";
+import { BasketContext } from "../../../services/basket/basket.context";
+import { SizeComponent } from "../components/size-components";
+import { ProductComponent } from "../components/product-component";
 
 export const ProductScreen = ({ route }) => {
-  const { id, name, price, image, description } = route.params;
+  const { id, name, shop, image, description } = route.params;
   const {
     getProductsDetails,
     productsDetails,
-    loading,
     selectedColor,
     selectedSize,
     handleColorChange,
     getUniqueColors,
+    getSelectedProductPrice,
     getUniqueSizes,
     handleSizeChange,
     setSelectedColor,
     setSelectedSize,
   } = useContext(ProductContext);
-  const renderItem = ({ item }) => <ProductItem item={item} />;
-
-  const [isSizeModalVisible, setIsSizeModalVisible] = useState(false);
+  const { addToBasket } = useContext(BasketContext);
+  const { user } = useContext(AuthenticationContext);
+  const navigation = useNavigation();
 
   useEffect(() => {
     getProductsDetails(id);
     setSelectedColor(null);
     setSelectedSize(null);
-    console.log(productsDetails);
   }, []);
+
+  const renderItem = ({ item }) => <ProductComponent item={item} />;
+
+  const [isSizeModalVisible, setIsSizeModalVisible] = useState(false);
+
+  const handleAddToBasket = () => {
+    const selectedProduct = productsDetails.find(
+      (detail) => detail.color === selectedColor && detail.size === selectedSize
+    );
+    addToBasket(selectedProduct, shop, user, navigation);
+  };
 
   const uniqueColors = useMemo(
     () => getUniqueColors(productsDetails),
@@ -50,24 +77,15 @@ export const ProductScreen = ({ route }) => {
     [productsDetails, selectedColor]
   );
 
-  const renderItemSize = ({ item }) => {
-    const productDetail = productsDetails.find(
-      (detail) => detail.color === selectedColor && detail.size === item
+  const renderItemSize = ({ item }) =>
+    SizeComponent(
+      item,
+      productsDetails,
+      selectedColor,
+      handleSizeChange,
+      setIsSizeModalVisible
     );
 
-    const handlePress = () => {
-      handleSizeChange(productDetail.size);
-      setIsSizeModalVisible(false);
-    };
-
-    return (
-      <TouchableOpacity onPress={handlePress}>
-        <Text style={{ padding: 16 }}>{productDetail.size}</Text>
-      </TouchableOpacity>
-    );
-  };
-
-  const navigation = useNavigation();
   return (
     <SafeArea>
       <View>
@@ -81,12 +99,17 @@ export const ProductScreen = ({ route }) => {
         <ShopName>{name}</ShopName>
         <CarouselContainer>
           <Carousel
-            data={[{ name, price, image, description }]}
+            data={[{ name, image, description }]}
             renderItem={renderItem}
             sliderWidth={Dimensions.get("window").width}
             itemWidth={250}
             itemHeight={450}
           />
+          <SizeText>
+            {getSelectedProductPrice()
+              ? `Prix : ${getSelectedProductPrice()}€`
+              : "Sélectionnez une couleur puis une taille"}
+          </SizeText>
         </CarouselContainer>
         <ColorButtonContainer>
           {uniqueColors.map((color) => {
@@ -112,35 +135,32 @@ export const ProductScreen = ({ route }) => {
             setIsSizeModalVisible(!isSizeModalVisible);
           }}
         >
-          <TouchableOpacity
-            style={{
-              flex: 1,
-              justifyContent: "flex-end",
-              backgroundColor: "rgba(0, 0, 0, 0.5)",
-            }}
-            onPress={() => setIsSizeModalVisible(false)}
-          >
-            <View
-              style={{
-                backgroundColor: "white",
-              }}
-            >
+          <ModalBackground onPress={() => setIsSizeModalVisible(false)}>
+            <ModalContent>
               <FlatList
                 data={uniqueSizes}
                 renderItem={renderItemSize}
                 keyExtractor={(item) => item}
               />
-            </View>
-          </TouchableOpacity>
+            </ModalContent>
+          </ModalBackground>
         </Modal>
         <TouchableOpacity onPress={() => setIsSizeModalVisible(true)}>
-          <Text style={{ padding: 16 }}>
+          <SizeText>
             {selectedSize
               ? `Taille: ${selectedSize}`
               : "Sélectionnez une taille"}
-          </Text>
+          </SizeText>
         </TouchableOpacity>
       </View>
+      <AddToBasketButton
+        onPress={handleAddToBasket}
+        disabled={!selectedColor || !selectedSize}
+        selectedColor={selectedColor}
+        selectedSize={selectedSize}
+      >
+        <AddToBasketButtonText>Ajouter au panier</AddToBasketButtonText>
+      </AddToBasketButton>
     </SafeArea>
   );
 };

@@ -5,7 +5,8 @@ import {
   BackContainer,
   ShopName,
   NewCollectionButton,
-  CarouselContainer,
+  NewCollectionButtonText,
+  ProductsContainer,
 } from "../components/shop.styles";
 import { colors } from "../../../infrastructure/theme/colors";
 import { useNavigation } from "@react-navigation/native";
@@ -14,6 +15,7 @@ import Carousel from "react-native-snap-carousel";
 import { ProductItem } from "../components/product-item";
 import { ShopContext } from "../../../services/shop/shop.context";
 import { ProductContext } from "../../../services/product/product.context";
+import { FlatList } from "react-native-gesture-handler";
 
 export const ShopScreen = ({ route }) => {
   const { id, name } = route.params;
@@ -49,26 +51,18 @@ export const ShopScreen = ({ route }) => {
         </BackContainer>
         <ShopName>{name}</ShopName>
 
-        <NewCollectionButton
-          style={{
-            backgroundColor: colors.brand.primary,
-            padding: 10,
-            borderRadius: 5,
-            margin: 10,
-          }}
-        >
-          <Text style={{ color: colors.text.primary }}>New Collection</Text>
+        <NewCollectionButton>
+          <NewCollectionButtonText>New Collection</NewCollectionButtonText>
         </NewCollectionButton>
       </View>
-      <CarouselContainer>
-        <Carousel
+      <ProductsContainer>
+        <FlatList
           data={products}
-          renderItem={renderItem}
-          sliderWidth={Dimensions.get("window").width}
-          itemWidth={250}
-          itemHeight={400}
+          renderItem={({ item }) => <ProductItem item={item} />}
+          keyExtractor={(item) => item.id}
+          numColumns={2}
         />
-      </CarouselContainer>
+      </ProductsContainer>
     </SafeArea>
   );
 };

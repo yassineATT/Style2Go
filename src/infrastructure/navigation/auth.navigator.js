@@ -1,10 +1,10 @@
 import React, { useContext } from "react";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import { SignInScreen } from "../../features/accounts/screens/signin.screen";
-import { SignUpScreen } from "../../features/accounts/screens/signup.screen";
-import { ResetPwdScreen } from "../../features/accounts/screens/reset-pwd.screens";
-import { SendCodeScreen } from "../../features/accounts/screens/send-code.screens";
-import { ConfirmEmail } from "../../features/accounts/screens/confirm-email.screen";
+import { SignInScreen } from "../../features/auth/screens/signin.screen";
+import { SignUpScreen } from "../../features/auth/screens/signup.screen";
+import { ResetPwdScreen } from "../../features/auth/screens/reset-pwd.screens";
+import { SendCodeScreen } from "../../features/auth/screens/send-code.screens";
+import { ConfirmEmail } from "../../features/auth/screens/confirm-email.screen";
 
 const Stack = createNativeStackNavigator();
 

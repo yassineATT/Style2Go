@@ -21,9 +21,15 @@ const StyledTextInput = styled(TextInput).attrs((props) => ({
   align-self: center;
 `;
 
+const ErrorText = styled(Text)`
+  color: red,
+  align-self: flex-start,
+  width: 85%,
+  margin-left: 35px,
+}`;
+
 const AuthInput = ({
-  // Récupération des props
-  control,
+  control, // contrôleur de react-hook-form
   name,
   rules = {},
   placeholder,
@@ -31,9 +37,9 @@ const AuthInput = ({
   keyboardType,
   isPassword = false,
 }) => {
-  const [isPasswordVisible, setIsPasswordVisible] = useState(false);
+  const [isPasswordVisible, setIsPasswordVisible] = useState(false); // état pour gérer la visibilité du mot de passe
   return (
-    // Controller permet de gérer les erreurs et de récupérer les valeurs des inputs dans le formulaire
+    // Le composant Controller de react-hook-form permet de connecter un composant de formulaire non contrôlé à un contrôleur
     <Controller
       control={control}
       name={name}
@@ -60,18 +66,7 @@ const AuthInput = ({
                 )
               }
             />
-            {error && (
-              <Text
-                style={{
-                  color: "red",
-                  alignSelf: "flex-start",
-                  width: "85%",
-                  marginLeft: 35,
-                }}
-              >
-                {error.message || "Error"}
-              </Text>
-            )}
+            {error && <ErrorText>{error.message || "Erreur"}</ErrorText>}
           </View>
         </>
       )}

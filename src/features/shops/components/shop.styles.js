@@ -77,11 +77,45 @@ export const NewCollectionButton = styled.TouchableOpacity`
 
 export const CarouselContainer = styled.View`
   padding: 10px;
+  margin-top: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 `;
 
-export const CarouselText = styled.Text`
+export const ProductsTextContainer = styled.View`
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  margin: 0 22px;
+`;
+
+export const ProductText = styled.Text`
   font-family: ${(props) => props.theme.fonts.body};
-  font-size: 18px;
+  font-size: 12px;
+  font-weight: 600;
   text-align: center;
-  margin-top: 8px;
+`;
+
+export const ProductsContainer = styled.View`
+  flex: 1;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 18px;
+`;
+
+export const NewCollectionButtonText = styled.Text`
+  color: ${(props) => props.theme.colors.text.primary};
+`;
+
+export const ProductImage = styled.Image`
+  width: 140px;
+  height: 160px;
+  border-radius: 26px;
+  margin: 12px;
+`;
+
+export const ProductItemContainer = styled.View`
+  margin: 10px;
+  opacity: ${(props) => (props.isAvailable ? 1 : 0.5)};
 `;

@@ -1,32 +1,45 @@
 import React, { memo } from "react";
 import { View, Image, Pressable } from "react-native";
-import { CarouselText } from "./shop.styles";
+import {
+  ProductsTextContainer,
+  ProductText,
+  ProductImage,
+  ProductItemContainer,
+} from "./shop.styles";
 import { useNavigation } from "@react-navigation/native";
 
 export const ProductItem = memo(({ item }) => {
   const navigation = useNavigation();
+  const price = item.details && item.details[0]?.price;
+  const isAvailable = item.details && item.details.length > 0;
 
   const onPress = () => {
-    navigation.navigate("ProductScreen", {
-      id: item.id,
-      name: item.name,
-      price: item.price,
-      image: item.image,
-      description: item.description,
-    });
+    if (isAvailable) {
+      navigation.navigate("ProductScreen", {
+        id: item.id,
+        shop: item.shopID,
+        name: item.name,
+        price: price,
+        image: item.image,
+        description: item.description,
+      });
+    } else {
+      alert("Ce produit n'est pas actuellement disponible.");
+    }
   };
 
   return (
     <Pressable onPress={onPress}>
-      <View>
-        <Image
+      <ProductItemContainer isAvailable={isAvailable}>
+        <ProductImage
           source={{ uri: item.image }}
-          style={{ width: 300, height: 500, borderRadius: 5 }}
           resizeMode="cover"
-        ></Image>
-        <CarouselText>{item.name}</CarouselText>
-        <CarouselText>{item.price}€</CarouselText>
-      </View>
+        ></ProductImage>
+        <ProductsTextContainer>
+          <ProductText>{item.name}</ProductText>
+          <ProductText>{price} €</ProductText>
+        </ProductsTextContainer>
+      </ProductItemContainer>
     </Pressable>
   );
 });

@@ -1,14 +1,41 @@
+type OrderDetail @model @auth(rules: [{allow: public}]) {
+  id: ID!
+  orderID: ID! @index(name: "byOrder")
+  quantite: Int
+  prix_unite: Float
+  productdetailID: ID! @index(name: "byProductDetail")
+}
+
+enum StatusOrder {
+  NEW
+  PREPARATION
+  COMMAND_READY
+  ACCEPT
+  RETRIEVE
+  CANCEL
+}
+
+type Order @model @auth(rules: [{allow: public}]) {
+  id: ID!
+  userID: ID! @index(name: "byUser")
+  shopID: ID! @index(name: "byShop")
+  status: StatusOrder
+  total: Float
+  shipping_cost: Float
+  OrderDetails: [OrderDetail] @hasMany(indexName: "byOrder", fields: ["id"])
+}
+
 type BasketDetail @model @auth(rules: [{allow: public}]) {
   id: ID!
   quantity: Int
   basketID: ID! @index(name: "byBasket")
-  ProductDetail: ProductDetail @hasOne
+  productdetailID: ID! @index(name: "byProductDetail")
 }
 
 type Basket @model @auth(rules: [{allow: public}]) {
   id: ID!
-  userID: ID! @index(name: "byUser")
   shopID: ID! @index(name: "byShop")
+  userID: ID! @index(name: "byUser")
   BasketDetails: [BasketDetail] @hasMany(indexName: "byBasket", fields: ["id"])
 }
 
@@ -21,7 +48,8 @@ type User @model @auth(rules: [{allow: public}]) {
   country: String
   postalCode: Int
   sub: ID
-  Paniers: [Basket] @hasMany(indexName: "byUser", fields: ["id"])
+  Baskets: [Basket] @hasMany(indexName: "byUser", fields: ["id"])
+  Orders: [Order] @hasMany(indexName: "byUser", fields: ["id"])
 }
 
 enum Size {
@@ -44,6 +72,8 @@ type ProductDetail @model @auth(rules: [{allow: public}]) {
   quantity: Int
   price: Float
   productID: ID! @index(name: "byProduct")
+  OrderDetails: [OrderDetail] @hasMany(indexName: "byProductDetail", fields: ["id"])
+  BasketDetails: [BasketDetail] @hasMany(indexName: "byProductDetail", fields: ["id"])
 }
 
 type Product @model @auth(rules: [{allow: public}]) {
@@ -64,5 +94,6 @@ type Shop @model @auth(rules: [{allow: public}]) {
   long: String
   Products: [Product] @hasMany(indexName: "byShop", fields: ["id"])
   Baskets: [Basket] @hasMany(indexName: "byShop", fields: ["id"])
+  Orders: [Order] @hasMany(indexName: "byShop", fields: ["id"])
 }
  

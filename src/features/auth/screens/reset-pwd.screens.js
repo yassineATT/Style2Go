@@ -1,45 +1,48 @@
 import React, { useContext } from "react";
 import { StatusBar, Alert } from "react-native";
 import {
-  ConfirmEmailCover,
-  ConfirmEmailCard,
   AuthButton,
   AuthTitle,
   AuthTextBlack,
   SecondButton,
   AuthTextWhite,
-} from "../components/account.styles";
+  ResetPwdCover,
+  ResetPwdCard,
+} from "../components/auth.styles";
 import AuthInput from "../components/authinput";
 import { useForm } from "react-hook-form";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import { AuthenticationContext } from "../../../services/authentification/auth.context";
 
-export const ConfirmEmail = () => {
+export const ResetPwdScreen = () => {
   const route = useRoute();
-  const { onConfirmEmail, onResendEmail } = useContext(AuthenticationContext);
-  const { control, handleSubmit, watch } = useForm({
+  const { onNewPassword } = useContext(AuthenticationContext);
+  const { control, handleSubmit } = useForm({
     defaultValues: { email: route?.params?.email },
-  }); // entrer le mail dans le champ email
-  const email = watch("email");
+  });
+
   const navigation = useNavigation();
 
-  const confirmPress = async (email, code) => {
-    const response = await onConfirmEmail(email, code);
+  const resetPress = async (email, code, password) => {
+    const response = await onNewPassword(email, code, password);
     if (response) {
-      Alert.alert("Email confirmé", "Continuer pour vous connecter", [
-        {
-          text: "Continuer",
-          onPress: () => navigation.navigate("SignIn"),
-        },
-      ]);
+      Alert.alert(
+        "Mot de passe réinitialisé",
+        "Continuer pour vous connecter",
+        [
+          {
+            text: "Continuer",
+            onPress: () => navigation.navigate("SignIn"),
+          },
+        ]
+      );
     }
   };
-
   return (
     <>
-      <ConfirmEmailCover>
-        <ConfirmEmailCard>
-          <AuthTitle>Confirmer votre mail</AuthTitle>
+      <ResetPwdCover>
+        <ResetPwdCard>
+          <AuthTitle>Renitialiser</AuthTitle>
           <AuthInput
             name="email"
             placeholder="Email"
@@ -48,33 +51,39 @@ export const ConfirmEmail = () => {
             control={control}
             rules={{ required: "Email is required" }}
           />
-
           <AuthInput
             name="code"
             placeholder="Code de vérification"
             keyboardType="numeric"
+            autoCapitalize="none"
             control={control}
+            rules={{ required: "Code is required" }}
+          />
+
+          <AuthInput
+            name="password"
+            placeholder="Nouveau mot de passe"
+            secureTextEntry
+            control={control}
+            isPassword={true}
             rules={{
-              required: "Veuillez entrez le code de vérification",
+              required: "Veuillez entrez un nouveau mot de passe",
             }}
           />
           <AuthButton
             mode="contained"
             onPress={handleSubmit((data) =>
-              confirmPress(data.email, data.code)
+              resetPress(data.email, data.code, data.password)
             )}
           >
             <AuthTextWhite>Valider</AuthTextWhite>
           </AuthButton>
-        </ConfirmEmailCard>
-        <AuthButton mode="contained" onPress={() => onResendEmail(email)}>
-          <AuthTextWhite>Renvoyer</AuthTextWhite>
-        </AuthButton>
+        </ResetPwdCard>
         <SecondButton onPress={() => navigation.navigate("SignIn")}>
-          <AuthTextBlack>Confirmer plus tard</AuthTextBlack>
+          <AuthTextBlack>Annuler</AuthTextBlack>
         </SecondButton>
         <StatusBar style="auto" />
-      </ConfirmEmailCover>
+      </ResetPwdCover>
     </>
   );
 };
