@@ -36,6 +36,7 @@ type EagerOrderDetail = {
   readonly quantite?: number | null;
   readonly prix_unite?: number | null;
   readonly productdetailID: string;
+  readonly product_name?: string | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }
@@ -50,6 +51,7 @@ type LazyOrderDetail = {
   readonly quantite?: number | null;
   readonly prix_unite?: number | null;
   readonly productdetailID: string;
+  readonly product_name?: string | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }

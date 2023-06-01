@@ -4,6 +4,7 @@ type OrderDetail @model @auth(rules: [{allow: public}]) {
   quantite: Int
   prix_unite: Float
   productdetailID: ID! @index(name: "byProductDetail")
+  product_name: String
 }
 
 enum StatusOrder {
