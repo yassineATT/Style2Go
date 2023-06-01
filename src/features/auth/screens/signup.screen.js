@@ -96,7 +96,7 @@ export const SignUpScreen = () => {
             )}
           >
             {/* handleSubmit vérifie d'abord les champs et les envoie à signUpPress */}
-            <AuthTextWhite>S'inscrire</AuthTextWhite>
+            <AuthTextBlack>S'inscrire</AuthTextBlack>
           </AuthButton>
         </SignUpCard>
         <SecondButton onPress={() => navigation.navigate("SignIn")}>

@@ -7,7 +7,7 @@ import {
   AuthTitle,
   AuthTextBlack,
   SecondButton,
-  AuthTextWhite,
+  MdpButton,
   AuthSeparator,
   AuthLine,
 } from "../components/auth.styles";
@@ -55,14 +55,14 @@ export const SignInScreen = () => {
             mode="contained"
             onPress={handleSubmit((data) => onLogin(data.email, data.password))}
           >
-            <AuthTextWhite>
+            <AuthTextBlack>
               {isLoading ? "Connexion en cours..." : "Se connecter"}
-            </AuthTextWhite>
+            </AuthTextBlack>
           </AuthButton>
         </SignInCard>
-        <SecondButton onPress={() => navigation.navigate("SendCode")}>
+        <MdpButton onPress={() => navigation.navigate("SendCode")}>
           <AuthTextBlack>Mot de passe oublié ?</AuthTextBlack>
-        </SecondButton>
+        </MdpButton>
         <AuthSeparator>
           <AuthLine />
           <AuthTextBlack style={{ width: 50 }}>OU</AuthTextBlack>
