@@ -79,7 +79,15 @@ export const AuthenticationContextProvider = ({ children }) => {
       });
       return { email };
     } catch (error) {
-      showErrorAlert(error.message, "Email déjà utilisé");
+      const errorMessages = {
+        UsernameExistsException: "Email déjà utilisé",
+        InvalidPasswordException: "Mot de passe invalide",
+        InvalidParameterException: "Email invalide",
+        TooManyRequestsException: "Trop de requêtes, veuillez patienter",
+      };
+      showErrorAlert(
+        errorMessages[error.code] ? errorMessages[error.code] : error.message
+      );
     }
   };
 
@@ -90,7 +98,16 @@ export const AuthenticationContextProvider = ({ children }) => {
       await Auth.confirmSignUp(email, code);
       return { email };
     } catch (error) {
-      showErrorAlert(error.message, "Utilisateur inconnu");
+      const errorMessages = {
+        CodeMismatchException: "Code incorrect",
+        ExpiredCodeException: "Code expiré",
+        InvalidParameterException: "Email invalide",
+        UserNotFoundException: "Utilisateur inconnu",
+        TooManyRequestsException: "Trop de requêtes, veuillez patienter",
+      };
+      showErrorAlert(
+        errorMessages[error.code] ? errorMessages[error.code] : error.message
+      );
     }
   };
 
@@ -146,8 +163,11 @@ export const AuthenticationContextProvider = ({ children }) => {
           "Limite dépassée, veuillez patienter avant de réessayer",
         TooManyFailedAttemptsException:
           "Trop de tentatives échouées, veuillez patienter",
+        UserNotFoundException: "Utilisateur inconnu",
       };
-      showErrorAlert(errorMessages[error.code]);
+      showErrorAlert(
+        errorMessages[error.code] ? errorMessages[error.code] : error.message
+      );
     }
   };
 
