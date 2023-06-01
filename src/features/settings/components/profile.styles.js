@@ -14,11 +14,11 @@ export const ProfileContainer = styled.View`
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  background-color: ${(props) => props.theme.colors.bg.primary};
+  background-color: ${(props) => props.theme.colors.bg.primaryBg};
 `;
 
 export const SaveButton = styled(Button)`
-  background-color: ${(props) => props.theme.colors.bg.tertiary};
+  background-color: ${(props) => props.theme.colors.bg.tertiaryBg};
   width: 300px;
   margin-bottom: 36px;
   align-self: center;

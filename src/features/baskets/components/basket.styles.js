@@ -13,7 +13,7 @@ export const Header = styled.Text`
 
 export const DetailButton = styled.TouchableOpacity`
   background-color: ${(props) => props.theme.colors.ui.none};
-  border: 1px solid ${(props) => props.theme.colors.bg.tertary};
+  border: 1px solid ${(props) => props.theme.colors.bg.tertiaryBg};
   height: 30px;
   width: 90px;
   margin: 5px 20px;
@@ -24,7 +24,7 @@ export const DetailButton = styled.TouchableOpacity`
 
 export const CommandeButton = styled.TouchableOpacity`
   background-color: ${(props) => props.theme.colors.ui.none};
-  border: 1px solid ${(props) => props.theme.colors.bg.tertary};
+  border: 1px solid ${(props) => props.theme.colors.bg.tertiaryBg};
   height: 40px;
   width: 150px;
   margin: 5px 20px;
@@ -94,7 +94,7 @@ export const BottomRow = styled.View`
   margin-bottom: 10px;
 `;
 export const BottomContainer = styled.View`
-  margin: 12px;
+  margin: 0px 6px 0px 6px;
   bottom: 0;
   left: 0;
   right: 0;

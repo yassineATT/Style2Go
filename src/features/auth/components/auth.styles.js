@@ -15,7 +15,7 @@ export const AuthTitle = styled(Text)`
 `;
 
 export const AuthButton = styled(Button)`
-  background-color: ${(props) => props.theme.colors.bg.tertiary};
+  background-color: ${(props) => props.theme.colors.bg.tertiaryBg};
   width: 300px;
   margin-top: 36px;
   align-self: center;
@@ -54,13 +54,13 @@ export const AccountCover = styled.View`
   flex: 1;
   align-items: center;
   justify-content: center;
-  background-color: ${(props) => props.theme.colors.bg.primary}};
+  background-color: ${(props) => props.theme.colors.bg.primaryBg}};
 `;
 
 // SignIn Styles
 
 export const SignInCard = styled(Card)`
-  background-color: ${(props) => props.theme.colors.bg.secondary};
+  background-color: ${(props) => props.theme.colors.bg.principal};
   width: 320px;
   height: 350px;
   border-radius: 40px;
@@ -75,7 +75,7 @@ export const AuthSeparator = styled.View`
 export const AuthLine = styled.View`
   flex: 1;
   height: 1px;
-  background-color: ${(props) => props.theme.colors.bg.tertiary};
+  background-color: ${(props) => props.theme.colors.bg.tertiaryBg};
 `;
 
 // SignUp Styles
@@ -91,13 +91,13 @@ export const SignUpCard = styled(Card)`
 export const SignUpCover = styled.View`
   flex: 1;
   align-items: center;
-  background-color: ${(props) => props.theme.colors.bg.primary}};
+  background-color: ${(props) => props.theme.colors.bg.primaryBg}};
 `;
 
 // SendCode Styles
 
 export const SendCodeCard = styled.View`
-  background-color: ${(props) => props.theme.colors.bg.secondary};
+  background-color: ${(props) => props.theme.colors.bg.secondaryBg};
   width: 320px;
   height: 260px;
   border-radius: 40px;
@@ -106,7 +106,7 @@ export const SendCodeCard = styled.View`
 // ConfirmEmail Styles
 
 export const ConfirmEmailCard = styled(Card)`
-  background-color: ${(props) => props.theme.colors.bg.secondary};
+  background-color: ${(props) => props.theme.colors.bg.secondaryBg};
   width: 330px;
   margin-top: 30%;
   height: 320px;
@@ -116,13 +116,13 @@ export const ConfirmEmailCard = styled(Card)`
 export const ConfirmEmailCover = styled.View`
   flex: 1;
   align-items: center;
-  background-color: ${(props) => props.theme.colors.bg.primary}};
+  background-color: ${(props) => props.theme.colors.bg.primaryBg}};
 `;
 
 // ResetPwd Styles
 
 export const ResetPwdCard = styled(Card)`
-  background-color: ${(props) => props.theme.colors.bg.secondary};
+  background-color: ${(props) => props.theme.colors.bg.secondaryBg};
   width: 320px;
   margin-top: 40%;
   height: 400px;
@@ -132,5 +132,5 @@ export const ResetPwdCard = styled(Card)`
 export const ResetPwdCover = styled.View`
   flex: 1;
   align-items: center;
-  background-color: ${(props) => props.theme.colors.bg.primary}};
+  background-color: ${(props) => props.theme.colors.bg.primaryBg}};
 `;

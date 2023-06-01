@@ -6,6 +6,7 @@ import { SettingScreen } from "../../features/settings/screens/settings.screen";
 import { ConfigProfileScreen } from "../../features/settings/screens/config-profile.screen";
 import { ProfileContext } from "../../services/saveProfile/profile.context";
 import { BasketScreen } from "../../features/baskets/screens/basket.screen";
+import { FavoriteScreen } from "../../features/favorite/screens/favorite.screen";
 
 const Tab = createBottomTabNavigator();
 
@@ -25,14 +26,11 @@ export const TabNavigator = () => {
     <Tab.Navigator
       initialRouteName="Home"
       screenOptions={{
-        tabBarActiveTintColor: "#FFBF69",
+        tabBarActiveTintColor: "#2EC4B6",
         tabBarInactiveTintColor: "grey",
+        tabBarShowLabel: false,
         headerShown: false,
         shifting: false,
-        tabBarLabelStyle: {
-          fontSize: 13,
-          fontFamily: "Roboto",
-        },
         tabBarStyle: {
           backgroundColor: "white",
           paddingTop: 1,
@@ -45,7 +43,6 @@ export const TabNavigator = () => {
         name="HomeTab"
         component={HomeScreen}
         options={{
-          tabBarLabel: "Accueil",
           tabBarIcon: ({ color, size }) => (
             <MaterialCommunityIcons name="home" size={size} color={color} />
           ),
@@ -53,9 +50,8 @@ export const TabNavigator = () => {
       />
       <Tab.Screen
         name="Favoris"
-        component={HomeScreen}
+        component={FavoriteScreen}
         options={{
-          tabBarLabel: "Favoris",
           tabBarIcon: ({ color, size }) => (
             <MaterialCommunityIcons name="heart" size={size} color={color} />
           ),
@@ -65,7 +61,6 @@ export const TabNavigator = () => {
         name="Cart"
         component={BasketScreen}
         options={{
-          tabBarLabel: "Panier",
           tabBarIcon: ({ color, size }) => (
             <MaterialCommunityIcons name="cart" size={size} color={color} />
           ),
@@ -75,7 +70,6 @@ export const TabNavigator = () => {
         name="Settings"
         component={SettingsWrapper}
         options={{
-          tabBarLabel: "Paramètres",
           tabBarIcon: ({ color, size }) => (
             <MaterialCommunityIcons name="cog" size={size} color={color} />
           ),

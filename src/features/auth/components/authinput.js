@@ -8,7 +8,7 @@ const StyledTextInput = styled(TextInput).attrs((props) => ({
   theme: {
     colors: {
       primary: props.error ? "red" : "black",
-      background: props.theme.colors.bg.primary,
+      background: props.theme.colors.bg.primaryBg,
       text: props.theme.colors.text.primary,
       underlineColor: props.theme.colors.ui.none,
       disabled: "none",
