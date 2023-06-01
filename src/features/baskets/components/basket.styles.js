@@ -86,11 +86,19 @@ export const RightContainer = styled.View`
   flex-direction: column;
   align-items: center;
 `;
-export const BottomContainer = styled.View`
+
+export const BottomRow = styled.View`
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
-  margin: 16px;
+  margin-bottom: 10px;
+`;
+export const BottomContainer = styled.View`
+  margin: 12px;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  position: absolute;
 `;
 export const TotalPrice = styled.Text`
   font-family: ${(props) => props.theme.fonts.body};
@@ -101,10 +109,49 @@ export const TotalPrice = styled.Text`
 
 export const TextEmpty = styled.Text`
   font-family: ${(props) => props.theme.fonts.body};
+  color: black
   font-size: 16px;
   font-weight: bold;
-  color: black;
-  text-align: center;
-  margin-top: 40px;
+  display: flex;
+  margin: auto;
   text-transform: uppercase;
+`;
+
+export const PriceText = styled.Text`
+  font-family: ${(props) => props.theme.fonts.body};
+  font-size: 18px;
+  font-weight: bold;
+  color: ${(props) => props.theme.colors.text.secondary};
+  text-align: right;
+`;
+
+export const BasketItem = styled.View`
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px;
+  border-bottom-width: 1px;
+  border-bottom-color: ${(props) => props.theme.colors.ui.secondary};
+`;
+
+export const QuantityContainer = styled.View`
+  flex-direction: row;
+  align-items: center;
+`;
+
+export const QuantityText = styled.Text`
+  font-family: ${(props) => props.theme.fonts.body};
+  font-size: 16px;
+  color: ${(props) => props.theme.colors.text.primary};
+`;
+
+export const ProductTitle = styled.Text`
+  font-family: ${(props) => props.theme.fonts.body};
+  font-size: 16px;
+  color: ${(props) => props.theme.colors.text.primary};
+`;
+
+export const ProductDetails = styled.View`
+  flex: 1;
+  padding-left: 10px;
 `;
