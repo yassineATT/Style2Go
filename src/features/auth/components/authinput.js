@@ -21,11 +21,11 @@ const StyledTextInput = styled(TextInput).attrs((props) => ({
   align-self: center;
 `;
 
-const ErrorText = styled(Text)`
-  color: red,
-  align-self: flex-start,
-  width: 85%,
-  margin-left: 35px,
+const ErrorText = styled.Text`
+  color: red;
+  align-self: flex-start;
+  width: 85%;
+  margin-left: 35px;
 }`;
 
 const AuthInput = ({

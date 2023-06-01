@@ -8,7 +8,7 @@ import { Button, Card, Text } from "react-native-paper";
 export const AuthTitle = styled(Text)`
   font-family: ${(props) => props.theme.fonts.body};
   font-weight: 800;
-  color: ${(props) => props.theme.colors.ui.secondary};
+  color: ${(props) => props.theme.colors.ui.primary};
   font-size: 30px;
   text-align: center;
   padding: 16px;
@@ -81,7 +81,7 @@ export const AuthLine = styled.View`
 // SignUp Styles
 
 export const SignUpCard = styled(Card)`
-  background-color: ${(props) => props.theme.colors.bg.secondary};
+  background-color: ${(props) => props.theme.colors.ui.principal};
   width: 320px;
   height: 490px;
   margin-top: 15%;
