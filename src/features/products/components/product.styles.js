@@ -47,6 +47,7 @@ export const ModalBackground = styled.TouchableOpacity`
   flex: 1;
   justify-content: flex-end;
   background-color: rgba(0, 0, 0, 0.5);
+  margin-bottom: 62px;
 `;
 
 export const ModalContent = styled.View`
