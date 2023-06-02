@@ -37,6 +37,7 @@ export const BasketProvider = ({ children }) => {
       } else {
         basket = existingBasket[0];
       }
+
       const newBasketDetail = new BasketDetail({
         quantity: 1,
         basketID: basket.id,
@@ -51,17 +52,20 @@ export const BasketProvider = ({ children }) => {
         [
           {
             text: "Continuer mes achats",
-            onPress: () => console.log("Continue Shopping Pressed"),
             style: "cancel",
           },
           {
             text: "Aller au panier",
             onPress: () =>
-              navigation.navigate("HomeScreen", { screen: "Cart" }), // Mettez ici le nom de votre écran Panier
+              navigation.navigate("HomeScreen", { screen: "Cart" }),
           },
         ]
       );
     } catch (error) {
+      Alert.alert(
+        "Erreur",
+        "Impossible d'ajouter l'article au panier, contacter le support"
+      );
       console.error("Error adding item to basket:", error);
     }
   };
@@ -105,7 +109,6 @@ export const BasketProvider = ({ children }) => {
 
   const fetchBasketData = async (userID) => {
     try {
-      DataStore.start();
       const baskets = await DataStore.query(Basket, (b) => b.userID.eq(userID));
       console.log("BasketsUser:", baskets);
       const basketsWithShopData = await Promise.all(
@@ -150,14 +153,14 @@ export const BasketProvider = ({ children }) => {
         bd.basketID.eq(basketID)
       );
 
-      const deleteDetailsPromises = basketDetails.map(async (bd) => {
+      const deleteDetails = basketDetails.map(async (bd) => {
         const detailExists = await DataStore.query(BasketDetail, bd.id);
         if (detailExists) {
           return DataStore.delete(BasketDetail, bd.id);
         }
       });
 
-      await Promise.all(deleteDetailsPromises);
+      await Promise.all(deleteDetails);
 
       const basketExists = await DataStore.query(Basket, basketID);
       if (basketExists) {
@@ -165,6 +168,7 @@ export const BasketProvider = ({ children }) => {
       }
 
       await DataStore.start();
+      setTotal(0);
 
       return fetchBasketData(user.attributes.sub);
     } catch (error) {
@@ -181,16 +185,17 @@ export const BasketProvider = ({ children }) => {
       }
     });
   };
-  console.log("selectedBaskets", selectedBaskets);
 
   useEffect(() => {
+    if (selectedBaskets.length === 0) {
+      setTotal(0);
+      return;
+    }
     const total = selectedBaskets.reduce((sum, selectedBasket) => {
-      console.log("Adding:", selectedBasket.totalPrice);
       return sum + selectedBasket.totalPrice;
     }, 0);
-    console.log("Total:", total);
     setTotal(total);
-  }, [selectedBaskets]);
+  }, [selectedBaskets, basketList]);
 
   useEffect(() => {
     if (user) {
@@ -209,6 +214,7 @@ export const BasketProvider = ({ children }) => {
     selectedBaskets,
     handleSelectionChange,
     total,
+    setTotal,
   };
 
   return (
