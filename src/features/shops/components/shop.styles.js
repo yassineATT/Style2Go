@@ -99,6 +99,7 @@ export const ProductsTextContainer = styled.View`
 export const ProductText = styled.Text`
   font-family: ${(props) => props.theme.fonts.body};
   font-size: 12px;
+  margin-right: 2px;
   font-weight: 600;
   text-align: center;
 `;
