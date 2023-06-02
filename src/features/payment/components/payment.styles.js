@@ -1,8 +1,9 @@
 import styled from "styled-components/native";
 
-export const Container = styled.View`
-  flex: 1;
-  padding: 16px;
+export const HeaderContainer = styled.View`
+  display: flex;
+  flex-direction: row;
+  margin: 16px;
   background-color: ${(props) => props.theme.colors.background};
 `;
 
@@ -10,6 +11,7 @@ export const Header = styled.Text`
   font-size: 24px;
   font-weight: bold;
   margin-bottom: 16px;
+  margin-left: 25%;
 `;
 
 export const CardLogo = styled.Image`

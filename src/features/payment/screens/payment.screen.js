@@ -1,6 +1,6 @@
 import React, { useState, useContext } from "react";
 import {
-  Container,
+  HeaderContainer,
   Header,
   CardLogo,
   ChoiceContainer,
@@ -11,7 +11,7 @@ import {
   PaymentButton,
   PaymentButtonText,
 } from "../components/payment.styles";
-import { TouchableOpacity, Text } from "react-native";
+import { TouchableOpacity, Text, SafeAreaView } from "react-native";
 import { OrderContext } from "../../../services/order/order.context";
 import { useRoute } from "@react-navigation/native";
 import { Ionicons } from "@expo/vector-icons";
@@ -27,17 +27,19 @@ export const PaymentScreen = () => {
 
   const handlePaymentPress = () => {
     console.log("OrderLaunch", selectedBaskets);
-    createOrder(selectedBaskets);
+    createOrder(selectedBaskets, navigation);
   };
 
   return (
-    <Container>
-      <Header>Paiement</Header>
-      <Ionicons
-        onPress={() => navigation.goBack()}
-        name="arrow-back-outline"
-        size={30}
-      />
+    <SafeAreaView>
+      <HeaderContainer>
+        <Ionicons
+          onPress={() => navigation.goBack()}
+          name="arrow-back-outline"
+          size={30}
+        />
+        <Header>Paiement</Header>
+      </HeaderContainer>
       <CardLogo
         source={{
           uri: "https://www.iconarchive.com/download/i90679/icons8/windows-8/Finance-Bank-Cards.512.png",
@@ -68,6 +70,6 @@ export const PaymentScreen = () => {
       <PaymentButton onPress={handlePaymentPress}>
         <PaymentButtonText>Payer</PaymentButtonText>
       </PaymentButton>
-    </Container>
+    </SafeAreaView>
   );
 };
