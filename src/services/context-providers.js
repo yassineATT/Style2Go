@@ -6,7 +6,7 @@ import { ShopProvider } from "./shop/shop.context";
 import { ProfileProvider } from "./saveProfile/profile.context";
 import { ProductProvider } from "./product/product.context";
 import { BasketProvider } from "./basket/basket.context";
-import { PaymentProvider } from "./payment/payment.context";
+import { OrderProvider } from "./order/order.context";
 
 export const ContextProviders = ({ children }) => (
   <ThemeProvider theme={theme}>
@@ -14,9 +14,9 @@ export const ContextProviders = ({ children }) => (
       <ProfileProvider>
         <ShopProvider>
           <BasketProvider>
-            <PaymentProvider>
+            <OrderProvider>
               <ProductProvider>{children}</ProductProvider>
-            </PaymentProvider>
+            </OrderProvider>
           </BasketProvider>
         </ShopProvider>
       </ProfileProvider>

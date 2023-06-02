@@ -12,7 +12,7 @@ import {
   PaymentButtonText,
 } from "../components/payment.styles";
 import { TouchableOpacity, Text } from "react-native";
-import { PaymentContext } from "../../../services/payment/payment.context";
+import { OrderContext } from "../../../services/order/order.context";
 import { useRoute } from "@react-navigation/native";
 import { Ionicons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
@@ -20,13 +20,14 @@ import { useNavigation } from "@react-navigation/native";
 export const PaymentScreen = () => {
   const navigation = useNavigation();
   const [paymentMethod, setPaymentMethod] = useState("card");
-  const { handlePayment } = useContext(PaymentContext);
+  const { createOrder } = useContext(OrderContext);
 
   const route = useRoute();
   const selectedBaskets = route.params?.baskets || [];
 
   const handlePaymentPress = () => {
-    handlePayment(selectedBaskets);
+    console.log("OrderLaunch", selectedBaskets);
+    createOrder(selectedBaskets);
   };
 
   return (
