@@ -7,6 +7,7 @@ import {
   ProductItemContainer,
 } from "./shop.styles";
 import { useNavigation } from "@react-navigation/native";
+import { Alert } from "react-native";
 
 export const ProductItem = memo(({ item }) => {
   const navigation = useNavigation();
@@ -24,7 +25,7 @@ export const ProductItem = memo(({ item }) => {
         description: item.description,
       });
     } else {
-      alert("Ce produit n'est pas actuellement disponible.");
+      Alert.alert("", "Ce produit n'est pas actuellement disponible.");
     }
   };
 
