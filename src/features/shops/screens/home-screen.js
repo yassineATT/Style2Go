@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import { Searchbar } from "react-native-paper";
 import { ShopItem } from "../components/shops-item";
 import {
@@ -10,14 +10,25 @@ import { ShopContext } from "../../../services/shop/shop.context";
 
 export const HomeScreen = () => {
   const { shops } = useContext(ShopContext);
+  const [searchQuery, setSearchQuery] = useState("");
+
+  const onChangeSearch = (query) => setSearchQuery(query);
+
+  const filteredShops = shops.filter((shop) =>
+    shop.name.toLowerCase().includes(searchQuery.toLowerCase())
+  );
 
   return (
     <SafeArea>
       <SearchContainer>
-        <Searchbar />
+        <Searchbar
+          placeholder="Search"
+          onChangeText={onChangeSearch}
+          value={searchQuery}
+        />
       </SearchContainer>
       <RestauContainer
-        data={shops}
+        data={filteredShops}
         renderItem={({ item }) => <ShopItem boutique={item} />}
         keyExtractor={(item) => item.name}
       />
