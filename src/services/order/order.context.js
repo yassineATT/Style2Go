@@ -2,14 +2,14 @@ import React, { createContext, useContext } from "react";
 import { Order, OrderDetail, ProductDetail } from "../../models";
 import { DataStore } from "aws-amplify";
 import { BasketContext } from "../basket/basket.context";
-import { set } from "react-hook-form";
+import { Alert } from "react-native";
 
 export const OrderContext = createContext();
 
 export const OrderProvider = ({ children }) => {
   const { deleteBasket, setTotal } = useContext(BasketContext);
 
-  const createOrder = async (selectedBasket) => {
+  const createOrder = async (selectedBasket, navigation) => {
     try {
       for (let basket of selectedBasket) {
         console.log("basketDetail", basket);
@@ -52,6 +52,12 @@ export const OrderProvider = ({ children }) => {
         await deleteBasket(basket.id);
         await setTotal(0);
       }
+      Alert.alert("", "Commande passée avec succès", [
+        {
+          text: "Retour à l'accueil",
+          onPress: () => navigation.navigate("HomeScreen"),
+        },
+      ]);
 
       console.log("Payment processed successfully", selectedBasket);
     } catch (error) {
