@@ -12,9 +12,10 @@ export const colors = {
   bg: {
     primaryBg: "#FFFFFF",
     secondaryBg: "#D9D9D9",
-    principal: "#2EC4B6",
+    principalBg: "#2EC4B6",
     tertiaryBg: "black",
-    alternative: "#97E1D4",
+    alternativeBg: "#97E1D4",
+    dangerBg: "#D0421B",
   },
   text: {
     primary: "white",

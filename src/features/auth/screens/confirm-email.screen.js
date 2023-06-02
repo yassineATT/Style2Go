@@ -68,7 +68,7 @@ export const ConfirmEmail = () => {
           </AuthButton>
         </ConfirmEmailCard>
         <AuthButton mode="contained" onPress={() => onResendEmail(email)}>
-          <AuthTextWhite>Renvoyer</AuthTextWhite>
+          <AuthTextBlack>Renvoyer</AuthTextBlack>
         </AuthButton>
         <SecondButton onPress={() => navigation.navigate("SignIn")}>
           <AuthTextBlack>Confirmer plus tard</AuthTextBlack>
