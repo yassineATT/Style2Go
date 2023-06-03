@@ -1,15 +1,9 @@
 import React, { useEffect, useState, useContext } from "react";
-import { Order } from "../../../models";
+import { Order, Shop } from "../../../models";
 import { DataStore } from "@aws-amplify/datastore";
 import { AuthenticationContext } from "../../../services/authentification/auth.context";
 import { Text } from "react-native";
-import {
-  Container,
-  ShopImage,
-  ColumnView,
-  RowView,
-  RightContainer,
-} from "./basket.styles";
+import { Container, OrderImage, ColumnView, TextOrder } from "./basket.styles";
 
 export const CurrentOrders = (modalVisible) => {
   const { user } = useContext(AuthenticationContext);
@@ -20,8 +14,16 @@ export const CurrentOrders = (modalVisible) => {
       const fetchedOrders = await DataStore.query(Order, (c) =>
         c.userID.eq(user.attributes.sub)
       );
-      console.log("fetchedOrders", fetchedOrders);
-      setOrders(fetchedOrders);
+
+      const ordersWithShop = await Promise.all(
+        fetchedOrders.map(async (order) => {
+          const shop = await DataStore.query(Shop, order.shopID);
+          return { ...order, shop };
+        })
+      );
+
+      console.log("fetchedOrders", ordersWithShop);
+      setOrders(ordersWithShop);
     };
 
     const subscription = DataStore.observe(Order).subscribe((msg) => {
@@ -37,17 +39,35 @@ export const CurrentOrders = (modalVisible) => {
     };
   }, [user, modalVisible]);
 
+  function mapOrderStatus(status) {
+    switch (status) {
+      case "NEW":
+        return "Commande en attente..";
+      case "PREPARATION":
+        return "En préparation..";
+      case "COMMAND_READY":
+        return "Commande prête";
+      case "ACCEPT":
+        return "Acceptée";
+      case "RETRIEVE":
+        return "Récupérée";
+      case "CANCEL":
+        return "Annulée";
+      default:
+        return status;
+    }
+  }
+
   return orders.length > 0 ? (
     orders.map((order) => (
       <Container key={order.id}>
+        <OrderImage source={{ uri: order.shop.image }} />
         <ColumnView>
-          <RowView>
-            <Text>Total: {order.total} €</Text>
-          </RowView>
+          <TextOrder>Boutique : {order.shop?.name}</TextOrder>
+          <TextOrder>Status : {mapOrderStatus(order.status)}</TextOrder>
+          <TextOrder>Commande n° : {order.id}</TextOrder>
+          <TextOrder>Total : {order.total.toFixed(2)}€</TextOrder>
         </ColumnView>
-        <RightContainer>
-          <Text>Status: {order.status}</Text>
-        </RightContainer>
       </Container>
     ))
   ) : (
