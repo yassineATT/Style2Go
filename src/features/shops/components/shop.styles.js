@@ -13,8 +13,8 @@ export const BoutiqueCard = styled(Pressable)`
   width: 100%;
   margin-bottom: 16px;
   border-radius: 8px;
-  border: 2px solid #eeeeee;
-  background-color: #c2c2c2;
+  border: 2px solid ${(props) => props.theme.colors.bg.secondaryBg};
+  background-color: ${(props) => props.theme.colors.bg.primaryBg};
   margin-bottom: 16px;
 `;
 
@@ -43,13 +43,13 @@ export const SearchContainer = styled.View`
 
 export const RestauContainer = styled(FlatList)`
   padding: 16px;
-  background-color: ${(props) => props.theme.colors.bg.primary};
+  background-color: ${(props) => props.theme.colors.bg.primaryBg};
 `;
 
 export const SafeArea = styled(SafeAreaView)`
   ${StatusBar.currentHeight && `marginTop: ${StatusBar.currentHeight}px`};
   flex: 1;
-  background-color: ${(props) => props.theme.colors.bg.primary};
+  background-color: ${(props) => props.theme.colors.bg.primaryBg};
 `;
 
 export const BackContainer = styled.View`
@@ -68,11 +68,17 @@ export const ShopName = styled.Text`
 `;
 
 export const NewCollectionButton = styled.TouchableOpacity`
-  background-color: ${(props) => props.theme.colors.brand.primary};
-  padding: 16px;
-  border-radius: 5px;
+  background-color: ${(props) => props.theme.colors.ui.principal};
+  padding: 26px;
+  border-radius: 16px;
   margin: 10px;
   margin-top: 60px;
+`;
+
+export const NewCollectionButtonText = styled.Text`
+  font-family: ${(props) => props.theme.fonts.body};
+  font-weight: 600;
+  color: ${(props) => props.theme.colors.text.secondar};
 `;
 
 export const CarouselContainer = styled.View`
@@ -93,6 +99,7 @@ export const ProductsTextContainer = styled.View`
 export const ProductText = styled.Text`
   font-family: ${(props) => props.theme.fonts.body};
   font-size: 12px;
+  margin-right: 2px;
   font-weight: 600;
   text-align: center;
 `;
@@ -102,10 +109,6 @@ export const ProductsContainer = styled.View`
   flex-direction: column;
   align-items: center;
   margin-top: 18px;
-`;
-
-export const NewCollectionButtonText = styled.Text`
-  color: ${(props) => props.theme.colors.text.primary};
 `;
 
 export const ProductImage = styled.Image`

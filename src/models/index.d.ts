@@ -36,6 +36,7 @@ type EagerOrderDetail = {
   readonly quantite?: number | null;
   readonly prix_unite?: number | null;
   readonly productdetailID: string;
+  readonly product_name?: string | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }
@@ -50,6 +51,7 @@ type LazyOrderDetail = {
   readonly quantite?: number | null;
   readonly prix_unite?: number | null;
   readonly productdetailID: string;
+  readonly product_name?: string | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }
@@ -296,6 +298,7 @@ type EagerShop = {
   readonly Products?: (Product | null)[] | null;
   readonly Baskets?: (Basket | null)[] | null;
   readonly Orders?: (Order | null)[] | null;
+  readonly shopSub?: string | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }
@@ -314,6 +317,7 @@ type LazyShop = {
   readonly Products: AsyncCollection<Product>;
   readonly Baskets: AsyncCollection<Basket>;
   readonly Orders: AsyncCollection<Order>;
+  readonly shopSub?: string | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }

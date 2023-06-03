@@ -6,7 +6,6 @@ import {
   AuthTitle,
   AuthTextBlack,
   SecondButton,
-  AuthTextWhite,
   SendCodeCard,
 } from "../components/auth.styles";
 import AuthInput from "../components/authinput";
@@ -46,7 +45,7 @@ export const SendCodeScreen = () => {
             mode="contained"
             onPress={handleSubmit(async (data) => sendCodePress(data.email))}
           >
-            <AuthTextWhite>Envoyer</AuthTextWhite>
+            <AuthTextBlack>Envoyer</AuthTextBlack>
           </AuthButton>
         </SendCodeCard>
         <SecondButton onPress={() => navigation.navigate("SignIn")}>

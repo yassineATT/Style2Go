@@ -47,8 +47,17 @@ export const ModalBackground = styled.TouchableOpacity`
   flex: 1;
   justify-content: flex-end;
   background-color: rgba(0, 0, 0, 0.5);
+  margin-bottom: 62px;
 `;
 
 export const ModalContent = styled.View`
-  background-color: ${(props) => props.theme.colors.bg.primary};
+  background-color: ${(props) => props.theme.colors.bg.primaryBg};
+`;
+
+export const ProductTitle = styled.Text`
+  font-family: ${(props) => props.theme.fonts.body};
+  font-size: 16px;
+  font-weight: bold;
+  text-align: center;
+  margin-top: 8px;
 `;

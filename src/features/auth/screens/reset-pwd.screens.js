@@ -76,7 +76,7 @@ export const ResetPwdScreen = () => {
               resetPress(data.email, data.code, data.password)
             )}
           >
-            <AuthTextWhite>Valider</AuthTextWhite>
+            <AuthTextBlack>Valider</AuthTextBlack>
           </AuthButton>
         </ResetPwdCard>
         <SecondButton onPress={() => navigation.navigate("SignIn")}>

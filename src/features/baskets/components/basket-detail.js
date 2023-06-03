@@ -61,7 +61,7 @@ export const BasketItem = ({ item, onSelectionChange }) => {
         </CommandeButton>
       </ColumnView>
       <RightContainer>
-        <Checkbox
+        <Checkbox.Android
           status={isSelected ? "checked" : "unchecked"}
           onPress={() => handleSelectionChange(!isSelected)}
         />

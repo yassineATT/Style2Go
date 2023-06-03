@@ -7,11 +7,13 @@ import {
   ProductItemContainer,
 } from "./shop.styles";
 import { useNavigation } from "@react-navigation/native";
+import { Alert } from "react-native";
 
 export const ProductItem = memo(({ item }) => {
   const navigation = useNavigation();
   const price = item.details && item.details[0]?.price;
-  const isAvailable = item.details && item.details.length > 0;
+  const isAvailable =
+    item.details && item.details.length > 0 && item.details[0].quantity > 0;
 
   const onPress = () => {
     if (isAvailable) {
@@ -24,7 +26,7 @@ export const ProductItem = memo(({ item }) => {
         description: item.description,
       });
     } else {
-      alert("Ce produit n'est pas actuellement disponible.");
+      Alert.alert("", "Ce produit n'est pas actuellement disponible.");
     }
   };
 

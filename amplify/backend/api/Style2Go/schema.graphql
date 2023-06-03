@@ -4,6 +4,7 @@ type OrderDetail @model @auth(rules: [{allow: public}]) {
   quantite: Int
   prix_unite: Float
   productdetailID: ID! @index(name: "byProductDetail")
+  product_name: String
 }
 
 enum StatusOrder {
@@ -95,5 +96,6 @@ type Shop @model @auth(rules: [{allow: public}]) {
   Products: [Product] @hasMany(indexName: "byShop", fields: ["id"])
   Baskets: [Basket] @hasMany(indexName: "byShop", fields: ["id"])
   Orders: [Order] @hasMany(indexName: "byShop", fields: ["id"])
+  shopSub: String
 }
  
