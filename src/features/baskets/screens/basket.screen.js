@@ -1,5 +1,4 @@
 import React, { useContext, useState } from "react";
-import { FlatList } from "react-native";
 import { BasketContext } from "../../../services/basket/basket.context";
 import { BasketItem } from "../components/basket-detail";
 import { SafeArea } from "../../shops/components/shop.styles";
@@ -13,7 +12,14 @@ import {
   BottomRow,
 } from "../components/basket.styles";
 import { useNavigation } from "@react-navigation/native";
-import { Alert, Button, Text, View } from "react-native";
+import {
+  Alert,
+  Button,
+  View,
+  FlatList,
+  ScrollView,
+  TouchableOpacity,
+} from "react-native";
 import Modal from "react-native-modal";
 import { CurrentOrders } from "../components/order-components";
 
@@ -63,6 +69,7 @@ export const BasketScreen = () => {
           swipeDirection="down"
           animationIn="slideInUp"
           animationOut="slideOutDown"
+          propagateSwipe={true}
           style={{ justifyContent: "flex-end", margin: 0 }}
         >
           <View
@@ -83,7 +90,13 @@ export const BasketScreen = () => {
                 marginBottom: 12,
               }}
             />
-            <CurrentOrders modalVisible={isModalVisible} />
+            <View style={{ flex: 1 }}>
+              <ScrollView>
+                <TouchableOpacity>
+                  <CurrentOrders modalVisible={isModalVisible} />
+                </TouchableOpacity>
+              </ScrollView>
+            </View>
           </View>
         </Modal>
         <BottomRow>
