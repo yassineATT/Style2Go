@@ -880,6 +880,13 @@ export const schema = {
                         ]
                     }
                 },
+                "shopSub": {
+                    "name": "shopSub",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
                 "createdAt": {
                     "name": "createdAt",
                     "isArray": false,
@@ -953,5 +960,5 @@ export const schema = {
     },
     "nonModels": {},
     "codegenVersion": "3.3.4",
-    "version": "cbb22b929fa33c82aabafecc6d937eba"
+    "version": "f4675453b0a113e8ae8ce55e30e200c1"
 };

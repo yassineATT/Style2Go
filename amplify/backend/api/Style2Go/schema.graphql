@@ -96,5 +96,6 @@ type Shop @model @auth(rules: [{allow: public}]) {
   Products: [Product] @hasMany(indexName: "byShop", fields: ["id"])
   Baskets: [Basket] @hasMany(indexName: "byShop", fields: ["id"])
   Orders: [Order] @hasMany(indexName: "byShop", fields: ["id"])
+  shopSub: String
 }
  
