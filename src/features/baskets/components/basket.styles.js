@@ -46,6 +46,7 @@ export const Container = styled.View`
   align-items: center;
   border-radius: 5px;
   margin-top: 10px;
+  width: 40%;
 `;
 
 export const ShopImage = styled(Image)`
@@ -139,6 +140,12 @@ export const QuantityContainer = styled.View`
   align-items: center;
 `;
 
+export const OrderImage = styled(Image)`
+  width: 110px;
+  height: 110px;
+  border-radius: 5px;
+`;
+
 export const QuantityText = styled.Text`
   font-family: ${(props) => props.theme.fonts.body};
   font-size: 16px;
@@ -154,4 +161,13 @@ export const ProductTitle = styled.Text`
 export const ProductDetails = styled.View`
   flex: 1;
   padding-left: 10px;
+`;
+
+export const TextOrder = styled.Text`
+  color: ${(props) => props.theme.colors.text.secondary};
+  font-family: ${(props) => props.theme.fonts.body};
+  font-size: 14px;
+  font-weight: bold;
+  text-align: center;
+  padding: 2px;
 `;
